@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "208497637541",
+    "project_id": "suikagame-8def6",
+    "storage_bucket": "suikagame-8def6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208497637541:android:9563b7e92b6091af2eb54c",
+        "android_client_info": {
+          "package_name": "com.superbox.aos.suikagame"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "208497637541-q9gh6381opq6aohp8dfo94jv1ojf5civ.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.superbox.aos.suikagame",
+            "certificate_hash": "23f15553fc844d568dc91fd46fe1a42b0cc6a1b9"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZrRI31KrNOIiUZGh3DVvOJf5pMOCgEDo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      },
+      "admob_app_id": "ca-app-pub-9704632099019185~1353006933"
+    }
+  ],
+  "configuration_version": "1"
+}
