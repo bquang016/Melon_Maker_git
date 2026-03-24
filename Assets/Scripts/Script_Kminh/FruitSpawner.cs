@@ -1,46 +1,55 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class FruitSpawner : MonoBehaviour
 {
     [Header("Kho chứa 5 quả đầu (từ 0 đến 4)")]
     public GameObject[] fruitPrefabs;
 
-    [Header("Giới hạn di chuyển đám mây (Thu hẹp số này lại)")]
-    public float gioiHanTrai = -1.5f;
-    public float gioiHanPhai = 1.5f;
+    [Header("Giới hạn di chuyển đám mây")]
+    public float gioiHanTrai = -1.2f;
+    public float gioiHanPhai = 1.2f;
 
     [Header("Thời gian chờ giữa 2 lần thả (Giây)")]
-    public float thoiGianCho = 1f; // 1 giây mới được thả quả tiếp
-
-    // Biến ngầm để đồng hồ đếm ngược hoạt động
+    public float thoiGianCho = 1f;
     private float thoiGianDemNguoc = 0f;
 
     void Update()
     {
-        // 1. HỆ THỐNG ĐỒNG HỒ ĐẾM NGƯỢC
+        // 1. Đồng hồ đếm ngược chờ thả
         if (thoiGianDemNguoc > 0)
         {
-            thoiGianDemNguoc -= Time.deltaTime; // Trừ dần thời gian đi
+            thoiGianDemNguoc -= Time.deltaTime;
         }
 
-        // 2. DI CHUYỂN ĐÁM MÂY (Vẫn giữ như cũ)
+        // 2. Di chuyển mây giới hạn trong hộp
         Vector3 screenPos = Input.mousePosition;
         screenPos.z = 10f;
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(screenPos);
 
-        // Ép tọa độ X không được vượt quá 2 viền giới hạn
         float toaDoX = Mathf.Clamp(mousePos.x, gioiHanTrai, gioiHanPhai);
         transform.position = new Vector3(toaDoX, transform.position.y, 0);
 
-        // 3. THẢ QUẢ (Đã thêm điều kiện: Chỉ thả khi đồng hồ đã đếm về <= 0)
+        // 3. THẢ QUẢ (LOGIC MỚI: Dưới kỷ lục 1 bậc)
         if (Input.GetMouseButtonDown(0) && thoiGianDemNguoc <= 0)
         {
-            int randomIndex = Random.Range(0, fruitPrefabs.Length);
+            int kyLucHienTai = GameManager.Instance.maxUnlockedFruitID;
+
+            // XÁC ĐỊNH MỨC QUẢ CAO NHẤT ĐƯỢC PHÉP THẢ:
+            int maxDroppable = 0;
+            if (kyLucHienTai > 0)
+            {
+                // Nếu đã có kỷ lục (từ quả 1 trở lên), chỉ cho thả tối đa là quả dưới đó 1 bậc
+                maxDroppable = kyLucHienTai - 1;
+            }
+
+            // Tính giới hạn bốc thăm (Đảm bảo không vượt quá sức chứa của Đám Mây - thường là 5 quả)
+            int gioiHanBocTham = Mathf.Min(maxDroppable + 1, fruitPrefabs.Length);
+
+            // Hàm Random.Range(0, n) đối với số nguyên sẽ chỉ lấy từ 0 đến n-1
+            int randomIndex = Random.Range(0, gioiHanBocTham);
             Instantiate(fruitPrefabs[randomIndex], transform.position, Quaternion.identity);
 
-            // Thả xong thì reset lại đồng hồ (Bắt đầu bắt người chơi đợi 1 giây)
+            // Bắt người chơi đợi lượt thả tiếp theo
             thoiGianDemNguoc = thoiGianCho;
         }
     }
