@@ -570,9 +570,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '0
-
-'
+  m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5266512219069b9458b5bb0ec50e5df4, type: 2}
   m_sharedMaterial: {fileID: -6374359912110228927, guid: 5266512219069b9458b5bb0ec50e5df4, type: 2}
@@ -720,9 +718,11 @@ MonoBehaviour:
   - {fileID: 66393068802185073, guid: 4250f7d62060ef644abf281ba756de6f, type: 3}
   - {fileID: 5301535122023662663, guid: 35b7bf29322d1304db80ef8f85d802f9, type: 3}
   diemHienTai: 0
-  textDiemSo: {fileID: 0}
+  textDiemSo: {fileID: 968297400}
   isGameOver: 0
-  panelGameOver: {fileID: 0}
+  panelLastChance: {fileID: 0}
+  panelGameOverThat: {fileID: 0}
+  maxUnlockedFruitID: 0
 --- !u!1 &1085093384
 GameObject:
   m_ObjectHideFlags: 0
@@ -1043,7 +1043,7 @@ MonoBehaviour:
   - {fileID: 2909286167282753859, guid: c6b9ccde3485ec5458b720519905554d, type: 3}
   gioiHanTrai: -1.9
   gioiHanPhai: 1.9
-  thoiGianCho: 1.2
+  thoiGianCho: 1
 --- !u!1 &1573473701
 GameObject:
   m_ObjectHideFlags: 0
