@@ -122,6 +122,86 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &747345567
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 747345570}
+  - component: {fileID: 747345569}
+  - component: {fileID: 747345571}
+  - component: {fileID: 747345572}
+  m_Layer: 0
+  m_Name: Manager_Skin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &747345569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747345567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a4c59e03a4c60a498976a3eba15b95a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allSkinPacks:
+  - {fileID: 11400000, guid: 432c451ada0d1384c87f5dfc06448015, type: 2}
+  - {fileID: 11400000, guid: e8605d79a86934942986d5a911d6da49, type: 2}
+  - {fileID: 11400000, guid: cbb5ae847e5583843895b028c622be5f, type: 2}
+  - {fileID: 11400000, guid: 0862efca28f47fc479803bf316c4b678, type: 2}
+  - {fileID: 11400000, guid: a8bb22d3608edbe4495c79fdce187ec7, type: 2}
+  - {fileID: 11400000, guid: a1c8721723c4b2a46a17cb80dc5b316d, type: 2}
+  - {fileID: 11400000, guid: 53ec45640d100e141aed54718f106d78, type: 2}
+--- !u!4 &747345570
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747345567}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.3779488, y: -0.63383347, z: 0.066880584}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &747345571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747345567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f78700141d65f347a0b98da10139ae3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  packToTest: {fileID: 11400000, guid: a8bb22d3608edbe4495c79fdce187ec7, type: 2}
+--- !u!114 &747345572
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 747345567}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 406a6b32815ea5741b3368bf8e5d9ead, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentSkinPack: {fileID: 11400000, guid: 67a70b3833e36f546886db1095954b46, type: 2}
 --- !u!1 &1856656066
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,3 +299,4 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1856656069}
+  - {fileID: 747345570}

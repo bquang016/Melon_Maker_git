@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8d43647599aaa3468a665836a0321d2, type: 3}
+  m_Name: Skin_Sea
+  m_EditorClassIdentifier: 
+  packID: sea
+  packName: Sea
+  price: 500
+  isUnlocked: 0
+  fruitSprites:
+  - {fileID: 578332360, guid: b963f8cd64931c044bf975e5de1a756a, type: 3}
+  - {fileID: -1598160280, guid: b963f8cd64931c044bf975e5de1a756a, type: 3}
+  - {fileID: -1694481370, guid: b963f8cd64931c044bf975e5de1a756a, type: 3}
+  - {fileID: 1251597377, guid: b963f8cd64931c044bf975e5de1a756a, type: 3}
+  - {fileID: 1366385221, guid: b963f8cd64931c044bf975e5de1a756a, type: 3}
+  - {fileID: 2119872804, guid: b963f8cd64931c044bf975e5de1a756a, type: 3}
+  - {fileID: -642937174, guid: b963f8cd64931c044bf975e5de1a756a, type: 3}
+  - {fileID: -684586395, guid: b963f8cd64931c044bf975e5de1a756a, type: 3}
+  - {fileID: 111017131, guid: d6a9011834812604697f15f96a7507d7, type: 3}
+  - {fileID: -678446428, guid: d6a9011834812604697f15f96a7507d7, type: 3}
+  - {fileID: 654808419, guid: d6a9011834812604697f15f96a7507d7, type: 3}
