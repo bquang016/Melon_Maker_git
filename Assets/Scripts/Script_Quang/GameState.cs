@@ -30,6 +30,8 @@ public class FruitSaveData
 [System.Serializable]
 public class SaveData
 {
+    public int bestScore = 0;
+    public int maxUnlockedFruitID = 0; // ID của quả to nhất đã từng ghép được
     public GameState metaData = new GameState();
     public List<FruitSaveData> sessionData = new List<FruitSaveData>();
 }
