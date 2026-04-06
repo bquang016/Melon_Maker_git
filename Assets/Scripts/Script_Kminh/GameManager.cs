@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
+        Instance = this;
         Time.timeScale = 1f;
     }
 
@@ -33,6 +34,17 @@ public class GameManager : MonoBehaviour
 
         // 2. Cập nhật Điểm cao nhất lên giao diện UI của Dev 5
         GameUIManager.Instance?.UpdateBestScore(currentSaveData.bestScore);
+    }
+
+    private void Update()
+    {
+        // --- DEBUG CHỈ DÀNH CHO DEV ---
+        // Bấm phím L để ép thua game ngay lập tức
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            Debug.Log("<color=red>DEV CHEAT: Đã kích hoạt ép thua game!</color>");
+            KichHoatGameOver();
+        }
     }
 
     public void CongDiem(int diemCongThem)
@@ -102,5 +114,35 @@ public class GameManager : MonoBehaviour
             SaveLoadManager.SaveGame(currentSaveData);
             Debug.Log("MỞ KHÓA THÀNH CÔNG QUẢ MỚI: ID " + idQuaMoi);
         }
+    }
+
+    public void ReplayGame()
+    {
+        // 1. LƯU ĐIỂM BEST SCORE (Chốt chặn cuối cùng)
+        if (diemHienTai > currentSaveData.bestScore)
+        {
+            currentSaveData.bestScore = diemHienTai;
+            SaveLoadManager.SaveGame(currentSaveData);
+        }
+
+        // 2. XÓA TOÀN BỘ TRÁI CÂY TRÊN MÀN HÌNH
+        // Tìm tất cả các object có Tag là "Fruit"
+        GameObject[] tatCaQua = GameObject.FindGameObjectsWithTag("Fruit");
+        foreach (GameObject qua in tatCaQua)
+        {
+            Destroy(qua);
+        }
+
+        // 3. RESET CÁC BIẾN LOGIC
+        diemHienTai = 0;
+        isGameOver = false;
+        Time.timeScale = 1f; // Chạy lại vật lý
+
+        // 4. CẬP NHẬT GIAO DIỆN UI
+        GameUIManager.Instance?.UpdateCurrentScore(0);
+        GameUIManager.Instance?.UpdateBestScore(currentSaveData.bestScore);
+        GameUIManager.Instance?.CloseAllPopups(); // Tắt Panel GameOver
+
+        Debug.Log("<color=cyan>Đã Reset Game thủ công thành công!</color>");
     }
 }
