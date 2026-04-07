@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8d43647599aaa3468a665836a0321d2, type: 3}
   m_Name: Skin_Default
   m_EditorClassIdentifier: 
-  packID: 
-  packName: 
+  packID: default
+  packName: Fruits
   price: 0
-  isUnlocked: 0
+  isUnlocked: 1
   fruitSprites:
   - {fileID: -696603710, guid: b963f8cd64931c044bf975e5de1a756a, type: 3}
   - {fileID: 1767518199, guid: b963f8cd64931c044bf975e5de1a756a, type: 3}
