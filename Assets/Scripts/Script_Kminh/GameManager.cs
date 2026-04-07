@@ -1,67 +1,149 @@
-﻿using UnityEngine;
-using TMPro;
+﻿using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    public static GameManager Instance { get; private set; }
 
     [Header("Kho chứa TOÀN BỘ 11 Prefab Trái Cây")]
     public GameObject[] tatCaTraiCay;
 
     [Header("Hệ thống Điểm số")]
     public int diemHienTai = 0;
-    public TextMeshProUGUI textDiemSo;
 
     [Header("Hệ thống Game Over & Revive")]
     public bool isGameOver = false;
-    public GameObject panelLastChance;
-    public GameObject panelGameOverThat;
 
     [Header("Hệ thống Mở Khóa (Progression)")]
-    public int maxUnlockedFruitID = 0; // Bắt đầu game, người chơi chỉ được thả quả ID 0 (Việt quất)
+    public int maxUnlockedFruitID = 0;
+
+    // Biến lưu trữ data hiện tại
+    private SaveData currentSaveData;
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
+        Instance = this;
         Time.timeScale = 1f;
+    }
+
+    private void Start()
+    {
+        // 1. Tải dữ liệu ngay khi khởi tạo game
+        currentSaveData = SaveLoadManager.LoadGame();
+        maxUnlockedFruitID = currentSaveData.maxUnlockedFruitID;
+
+        // 2. Cập nhật Điểm cao nhất lên giao diện UI của Dev 5
+        GameUIManager.Instance?.UpdateBestScore(currentSaveData.bestScore);
+    }
+
+    private void Update()
+    {
+        // --- DEBUG CHỈ DÀNH CHO DEV ---
+        // Bấm phím L để ép thua game ngay lập tức
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            Debug.Log("<color=red>DEV CHEAT: Đã kích hoạt ép thua game!</color>");
+            KichHoatGameOver();
+        }
     }
 
     public void CongDiem(int diemCongThem)
     {
         if (isGameOver) return;
+
         diemHienTai += diemCongThem;
-        if (textDiemSo != null) textDiemSo.text = diemHienTai.ToString();
+        // In ra Console để xem GameManager có nhận được điểm không
+        Debug.Log($"<color=green>Đã cộng {diemCongThem} điểm. Tổng: {diemHienTai}</color>");
+
+        if (GameUIManager.Instance == null)
+        {
+            Debug.LogError("LỖI: GameUIManager.Instance đang NULL! Nên không thể gửi điểm sang UI.");
+        }
+        else
+        {
+            // GỌI UI: Cập nhật điểm hiện tại
+            GameUIManager.Instance?.UpdateCurrentScore(diemHienTai);
+            }
     }
 
     public void KichHoatGameOver()
     {
         if (isGameOver) return;
+
         isGameOver = true;
-        if (panelLastChance != null) panelLastChance.SetActive(true);
-        Time.timeScale = 0f;
+        Time.timeScale = 0f; // Dừng mọi vật lý trong game
+
+        // GỌI UI: Bật màn hình Last Chance (Revive)
+        GameUIManager.Instance?.ShowRevive();
     }
 
     public void HoiSinh_Revive()
     {
-        if (panelLastChance != null) panelLastChance.SetActive(false);
-        // TODO: Cây búa đập quả cao nhất sẽ làm sau
         isGameOver = false;
-        Time.timeScale = 1f;
+        Time.timeScale = 1f; // Tiếp tục vật lý
+
+        // GỌI UI: Đóng màn hình Revive để chơi tiếp
+        GameUIManager.Instance?.CloseAllPopups();
     }
 
     public void TuChoiHoiSinh_ThuaLuon()
     {
-        if (panelLastChance != null) panelLastChance.SetActive(false);
-        if (panelGameOverThat != null) panelGameOverThat.SetActive(true);
+        // GỌI UI: Bật màn hình Game Over thực sự
+        GameUIManager.Instance?.ShowGameOver();
+
+        // KIỂM TRA & LƯU KỶ LỤC MỚI
+        if (diemHienTai > currentSaveData.bestScore)
+        {
+            currentSaveData.bestScore = diemHienTai;
+            SaveLoadManager.SaveGame(currentSaveData);
+
+            // Cập nhật lại UI điểm cao nhất mới
+            GameUIManager.Instance?.UpdateBestScore(currentSaveData.bestScore);
+        }
     }
 
-    // HÀM MỚI: Cập nhật kỷ lục khi có quả mới được gộp thành công
     public void KiemTraMoKhoa(int idQuaMoi)
     {
+        // Nếu ghép được quả mới to hơn kỷ lục cũ
         if (idQuaMoi > maxUnlockedFruitID)
         {
             maxUnlockedFruitID = idQuaMoi;
+            currentSaveData.maxUnlockedFruitID = maxUnlockedFruitID;
+
+            // Lưu lại tiến trình ngay lập tức
+            SaveLoadManager.SaveGame(currentSaveData);
             Debug.Log("MỞ KHÓA THÀNH CÔNG QUẢ MỚI: ID " + idQuaMoi);
         }
+    }
+
+    public void ReplayGame()
+    {
+        // 1. LƯU ĐIỂM BEST SCORE (Chốt chặn cuối cùng)
+        if (diemHienTai > currentSaveData.bestScore)
+        {
+            currentSaveData.bestScore = diemHienTai;
+            SaveLoadManager.SaveGame(currentSaveData);
+        }
+
+        // 2. XÓA TOÀN BỘ TRÁI CÂY TRÊN MÀN HÌNH
+        // Tìm tất cả các object có Tag là "Fruit"
+        GameObject[] tatCaQua = GameObject.FindGameObjectsWithTag("Fruit");
+        foreach (GameObject qua in tatCaQua)
+        {
+            Destroy(qua);
+        }
+
+        // 3. RESET CÁC BIẾN LOGIC
+        diemHienTai = 0;
+        isGameOver = false;
+        Time.timeScale = 1f; // Chạy lại vật lý
+
+        // 4. CẬP NHẬT GIAO DIỆN UI
+        GameUIManager.Instance?.UpdateCurrentScore(0);
+        GameUIManager.Instance?.UpdateBestScore(currentSaveData.bestScore);
+        GameUIManager.Instance?.CloseAllPopups(); // Tắt Panel GameOver
+
+        Debug.Log("<color=cyan>Đã Reset Game thủ công thành công!</color>");
     }
 }
