@@ -26,5 +26,12 @@ public class ShopTester : MonoBehaviour
             PlayerPrefs.DeleteAll();
             Debug.Log("Đã xóa sạch Data test!");
         }
+        // Bấm phím P để giả lập Game Over với số điểm ngẫu nhiên từ 100 đến 3000
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            int randomScore = Random.Range(100, 3000);
+            LeaderboardManager.Instance.SubmitScore(randomScore);
+        }
     }
+
 }
