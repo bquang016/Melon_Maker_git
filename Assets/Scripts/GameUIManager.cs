@@ -140,10 +140,5 @@ public class GameUIManager : MonoBehaviour
         }
     }
 
-    public void ReplayGame()
-    {
-        // Lấy tên của Scene hiện tại đang chơi (ví dụ: "MainScene") và load lại nó từ đầu
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
     #endregion
 }
