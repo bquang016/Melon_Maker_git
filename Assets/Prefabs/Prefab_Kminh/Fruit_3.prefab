@@ -163,3 +163,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fruitID: 3
   hasMerged: 0
+  explosionPrefab: {fileID: 7320174754180314352, guid: b1620dcc8f722c24fbed45144a27e6f1, type: 3}
+  mergeSound: {fileID: 8300000, guid: 7b169472d0365ef4fb45635829a77d09, type: 3}
