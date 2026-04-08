@@ -1756,7 +1756,7 @@ TextureImporter:
         width: 54
         height: 50
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 20, y: 19, z: 20, w: 19}
       outline: []
       physicsShape: []
@@ -1764,6 +1764,27 @@ TextureImporter:
       bones: []
       spriteID: 763e179dd5dfa4e4980bf596914d5d17
       internalID: -748124318
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: amthanh
+      rect:
+        serializedVersion: 2
+        x: 1018
+        y: 490
+        width: 42
+        height: 40
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 044b916cbfd5ba846bb221ff1dc1298c
+      internalID: -1928088092
       vertices: []
       indices: 
       edges: []
@@ -1779,6 +1800,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      amthanh: -1928088092
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_0: -1554829282
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_1: 255266169
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_10: -139044665
