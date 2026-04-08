@@ -4,9 +4,13 @@ using UnityEngine;
 [System.Serializable]
 public class GameState
 {
-    public int highScore;
-    public int currentCoin;
+    // TIỀN TỆ TRONG GAME
+    public int currentRuby = 0;
+    public int currentMusicNote = 0;
+
+    // LƯU TRỮ SHOP
     public List<string> unlockedSkins = new List<string>();
+    public List<string> unlockedMusic = new List<string>();
 }
 
 [System.Serializable]
@@ -30,8 +34,11 @@ public class FruitSaveData
 [System.Serializable]
 public class SaveData
 {
+    // CÁC KỶ LỤC CỦA NGƯỜI CHƠI
     public int bestScore = 0;
     public int maxUnlockedFruitID = 0; // ID của quả to nhất đã từng ghép được
+
+    // DỮ LIỆU KINH TẾ & TRẠNG THÁI BÀN CHƠI
     public GameState metaData = new GameState();
     public List<FruitSaveData> sessionData = new List<FruitSaveData>();
 }
