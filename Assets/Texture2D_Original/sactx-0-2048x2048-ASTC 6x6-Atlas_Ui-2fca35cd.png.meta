@@ -698,7 +698,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_28
+      name: ad
       rect:
         serializedVersion: 2
         x: 859
@@ -1769,7 +1769,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_79
+      name: khung trang
       rect:
         serializedVersion: 2
         x: 1227
@@ -1798,7 +1798,7 @@ TextureImporter:
         width: 43
         height: 42
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1806,6 +1806,48 @@ TextureImporter:
       bones: []
       spriteID: 8cd77750ce1845a479adb95a33786015
       internalID: 1967803316
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: lock
+      rect:
+        serializedVersion: 2
+        x: 881
+        y: 1623
+        width: 44
+        height: 49
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e8980b1b4c5a98143bec11b01b1994f0
+      internalID: -1493597548
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: nhac
+      rect:
+        serializedVersion: 2
+        x: 1388
+        y: 0
+        width: 41
+        height: 44
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2baa1204c35cba1499691cb62596ba90
+      internalID: 749281577
       vertices: []
       indices: 
       edges: []
@@ -1821,7 +1863,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      ad: -955096743
       amthanh: -1928088092
+      khung trang: 161903287
+      lock: -1493597548
+      nhac: 749281577
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_0: -1554829282
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_1: 255266169
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_10: -139044665
@@ -1843,7 +1889,6 @@ TextureImporter:
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_25: 805182653
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_26: -1895552842
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_27: -267280407
-      sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_28: -955096743
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_29: 603329125
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_3: 963480188
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_30: 1826581277
@@ -1899,7 +1944,6 @@ TextureImporter:
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_76: -262387338
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_77: 525232267
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_78: -748124318
-      sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_79: 161903287
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_8: -886347430
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_80: 1967803316
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_9: -1381019140
