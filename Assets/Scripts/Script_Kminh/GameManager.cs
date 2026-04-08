@@ -1,6 +1,7 @@
 ﻿using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic; // Đừng quên cái này để dùng List
 
 public class GameManager : MonoBehaviour
 {
@@ -18,132 +19,164 @@ public class GameManager : MonoBehaviour
     [Header("Hệ thống Mở Khóa (Progression)")]
     public int maxUnlockedFruitID = 0;
 
-    // Biến lưu trữ data hiện tại
-    private SaveData currentSaveData;
-
     private void Awake()
     {
         Instance = this;
         Time.timeScale = 1f;
     }
 
+    // ==========================================
+    // LIÊN KẾT VỚI ADS MANAGER CỦA DEV 3 ĐỂ NHẬN LỆNH HỒI SINH
+    // ==========================================
+    private void OnEnable()
+    {
+        // Khi AdsManager phát loa báo xem xong Video Hồi sinh, tự động gọi hàm HoiSinh_Revive
+        AdsManager.OnRewardRevive += HoiSinh_Revive;
+    }
+
+    private void OnDisable()
+    {
+        AdsManager.OnRewardRevive -= HoiSinh_Revive;
+    }
+
     private void Start()
     {
-        // 1. Tải dữ liệu ngay khi khởi tạo game
-        currentSaveData = SaveLoadManager.LoadGame();
-        maxUnlockedFruitID = currentSaveData.maxUnlockedFruitID;
+        // 1. Lấy dữ liệu từ cái Két Sắt DataManager
+        maxUnlockedFruitID = DataManager.Instance.currentSaveData.maxUnlockedFruitID;
 
-        // 2. Cập nhật Điểm cao nhất lên giao diện UI của Dev 5
-        GameUIManager.Instance?.UpdateBestScore(currentSaveData.bestScore);
+        // 2. Cập nhật Điểm cao nhất lên giao diện UI
+        GameUIManager.Instance?.UpdateBestScore(DataManager.Instance.currentSaveData.bestScore);
+
+        // 3. GỌI HÀM LOAD TRÁI CÂY CHƠI DỞ (Tuyệt chiêu đóng băng vật lý)
+        LoadSavedBoard();
     }
 
     private void Update()
     {
-        // --- DEBUG CHỈ DÀNH CHO DEV ---
-        // Bấm phím L để ép thua game ngay lập tức
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.L)) KichHoatGameOver();
+    }
+
+    // ==========================================
+    // HỆ THỐNG LOAD TRÁI CÂY (TỪ DATA VẼ RA MÀN HÌNH)
+    // ==========================================
+    private void LoadSavedBoard()
+    {
+        List<FruitSaveData> savedFruits = DataManager.Instance.currentSaveData.sessionData;
+        if (savedFruits == null || savedFruits.Count == 0) return;
+
+        Debug.Log($"[GameManager] Đang khôi phục lại {savedFruits.Count} trái cây đang chơi dở...");
+
+        foreach (var data in savedFruits)
         {
-            Debug.Log("<color=red>DEV CHEAT: Đã kích hoạt ép thua game!</color>");
-            KichHoatGameOver();
+            // Tìm đúng prefab theo ID (Giả sử tên prefab chứa ID ở cuối, VD: "Fruit_0")
+            GameObject prefab = null;
+            foreach (var p in tatCaTraiCay)
+            {
+                if (p.name == data.fruitID) { prefab = p; break; }
+            }
+
+            if (prefab != null)
+            {
+                GameObject newFruit = Instantiate(prefab, new Vector3(data.posX, data.posY, 0), Quaternion.Euler(0, 0, data.rotZ));
+
+                // Tắt vật lý để chống nổ Big Bang
+                Rigidbody2D rb = newFruit.GetComponent<Rigidbody2D>();
+                if (rb != null) rb.simulated = false;
+            }
+        }
+
+        // Bật lại vật lý sau 0.5s
+        Invoke(nameof(EnablePhysics), 0.5f);
+    }
+
+    private void EnablePhysics()
+    {
+        GameObject[] fruits = GameObject.FindGameObjectsWithTag("Fruit");
+        foreach (var f in fruits)
+        {
+            Rigidbody2D rb = f.GetComponent<Rigidbody2D>();
+            if (rb != null) rb.simulated = true;
         }
     }
 
+    // ==========================================
+    // HỆ THỐNG ĐIỂM & GAME OVER (ĐÃ FIX LỖI)
+    // ==========================================
     public void CongDiem(int diemCongThem)
     {
         if (isGameOver) return;
-
         diemHienTai += diemCongThem;
-        // In ra Console để xem GameManager có nhận được điểm không
-        Debug.Log($"<color=green>Đã cộng {diemCongThem} điểm. Tổng: {diemHienTai}</color>");
-
-        if (GameUIManager.Instance == null)
-        {
-            Debug.LogError("LỖI: GameUIManager.Instance đang NULL! Nên không thể gửi điểm sang UI.");
-        }
-        else
-        {
-            // GỌI UI: Cập nhật điểm hiện tại
-            GameUIManager.Instance?.UpdateCurrentScore(diemHienTai);
-            }
+        GameUIManager.Instance?.UpdateCurrentScore(diemHienTai);
     }
 
     public void KichHoatGameOver()
     {
         if (isGameOver) return;
-
         isGameOver = true;
-        Time.timeScale = 0f; // Dừng mọi vật lý trong game
-
-        // GỌI UI: Bật màn hình Last Chance (Revive)
+        Time.timeScale = 0f;
         GameUIManager.Instance?.ShowRevive();
     }
 
+    // HÀM NÀY SẼ CHẠY KHI BẠN XEM XONG ADS REWARD
     public void HoiSinh_Revive()
     {
-        isGameOver = false;
-        Time.timeScale = 1f; // Tiếp tục vật lý
+        Debug.Log("<color=cyan>[GameManager] ĐANG HỒI SINH: Quét dọn trái cây...</color>");
 
-        // GỌI UI: Đóng màn hình Revive để chơi tiếp
+        // 1. Tìm toàn bộ trái cây
+        GameObject[] tatCaQua = GameObject.FindGameObjectsWithTag("Fruit");
+
+        // 2. Sắp xếp mảng: Quả nào nằm CAO NHẤT (trục Y lớn nhất) đưa lên đầu
+        System.Array.Sort(tatCaQua, (a, b) => b.transform.position.y.CompareTo(a.transform.position.y));
+
+        // 3. Tiêu diệt 4 quả cao nhất để lấy không gian trống trong hộp
+        int soQuaCanXoa = Mathf.Min(4, tatCaQua.Length);
+        for (int i = 0; i < soQuaCanXoa; i++)
+        {
+            // Có thể kèm theo hiệu ứng nổ nhỏ ở đây cho đẹp
+            Destroy(tatCaQua[i]);
+        }
+
+        // 4. Cho phép game chạy lại
+        isGameOver = false;
+        Time.timeScale = 1f;
         GameUIManager.Instance?.CloseAllPopups();
     }
 
     public void TuChoiHoiSinh_ThuaLuon()
     {
-        // GỌI UI: Bật màn hình Game Over thực sự
         GameUIManager.Instance?.ShowGameOver();
+        DataManager.Instance.UpdateBestScore(diemHienTai); // Gọi két sắt lưu điểm
 
-        // KIỂM TRA & LƯU KỶ LỤC MỚI
-        if (diemHienTai > currentSaveData.bestScore)
-        {
-            currentSaveData.bestScore = diemHienTai;
-            SaveLoadManager.SaveGame(currentSaveData);
-
-            // Cập nhật lại UI điểm cao nhất mới
-            GameUIManager.Instance?.UpdateBestScore(currentSaveData.bestScore);
-        }
+        // Hiện QUẢNG CÁO TOÀN MÀN HÌNH ngay lúc này (Gọi Dev 3)
+        AdsManager.Instance.ShowInterstitial();
     }
 
     public void KiemTraMoKhoa(int idQuaMoi)
     {
-        // Nếu ghép được quả mới to hơn kỷ lục cũ
         if (idQuaMoi > maxUnlockedFruitID)
         {
             maxUnlockedFruitID = idQuaMoi;
-            currentSaveData.maxUnlockedFruitID = maxUnlockedFruitID;
-
-            // Lưu lại tiến trình ngay lập tức
-            SaveLoadManager.SaveGame(currentSaveData);
-            Debug.Log("MỞ KHÓA THÀNH CÔNG QUẢ MỚI: ID " + idQuaMoi);
+            DataManager.Instance.UpdateMaxFruit(maxUnlockedFruitID); // Gọi két sắt lưu kỷ lục
         }
     }
 
     public void ReplayGame()
     {
-        // 1. LƯU ĐIỂM BEST SCORE (Chốt chặn cuối cùng)
-        if (diemHienTai > currentSaveData.bestScore)
-        {
-            currentSaveData.bestScore = diemHienTai;
-            SaveLoadManager.SaveGame(currentSaveData);
-        }
+        DataManager.Instance.UpdateBestScore(diemHienTai);
 
-        // 2. XÓA TOÀN BỘ TRÁI CÂY TRÊN MÀN HÌNH
-        // Tìm tất cả các object có Tag là "Fruit"
         GameObject[] tatCaQua = GameObject.FindGameObjectsWithTag("Fruit");
-        foreach (GameObject qua in tatCaQua)
-        {
-            Destroy(qua);
-        }
+        foreach (GameObject qua in tatCaQua) Destroy(qua);
 
-        // 3. RESET CÁC BIẾN LOGIC
         diemHienTai = 0;
         isGameOver = false;
-        Time.timeScale = 1f; // Chạy lại vật lý
+        Time.timeScale = 1f;
 
-        // 4. CẬP NHẬT GIAO DIỆN UI
         GameUIManager.Instance?.UpdateCurrentScore(0);
-        GameUIManager.Instance?.UpdateBestScore(currentSaveData.bestScore);
-        GameUIManager.Instance?.CloseAllPopups(); // Tắt Panel GameOver
+        GameUIManager.Instance?.UpdateBestScore(DataManager.Instance.currentSaveData.bestScore);
+        GameUIManager.Instance?.CloseAllPopups();
 
-        Debug.Log("<color=cyan>Đã Reset Game thủ công thành công!</color>");
+        // Dọn dẹp sạch sẽ danh sách lưu tạm thời trong RAM
+        DataManager.Instance.currentSaveData.sessionData.Clear();
+        DataManager.Instance.SaveDataToDisk();
     }
 }
