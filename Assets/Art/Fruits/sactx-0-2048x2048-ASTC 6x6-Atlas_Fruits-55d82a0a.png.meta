@@ -110,7 +110,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_2
+      name: lv10_zoo
       rect:
         serializedVersion: 2
         x: 3
@@ -150,7 +150,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_3
+      name: lv9_halloween
       rect:
         serializedVersion: 2
         x: 0
@@ -233,7 +233,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_6
+      name: lv9_zoo
       rect:
         serializedVersion: 2
         x: 370
@@ -274,7 +274,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_7
+      name: lv10_solid
       rect:
         serializedVersion: 2
         x: 1139
@@ -316,7 +316,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_8
+      name: duahau_winter
       rect:
         serializedVersion: 2
         x: 0
@@ -367,7 +367,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_9
+      name: cavoi_animals
       rect:
         serializedVersion: 2
         x: 461
@@ -409,7 +409,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_10
+      name: bo
       rect:
         serializedVersion: 2
         x: 1137
@@ -543,11 +543,11 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_14
+      name: cavoi_sea
       rect:
         serializedVersion: 2
-        x: 2
-        y: 2
+        x: 0
+        y: 0
         width: 456
         height: 436
       alignment: 0
@@ -591,10 +591,10 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_0
+      name: bao_animals
       rect:
         serializedVersion: 2
-        x: 310
+        x: 312
         y: 1650
         width: 307
         height: 306
@@ -632,7 +632,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_1
+      name: lv9_solid
       rect:
         serializedVersion: 2
         x: 618
@@ -672,7 +672,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_4
+      name: thom_winter
       rect:
         serializedVersion: 2
         x: 930
@@ -717,7 +717,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_15
+      name: gau_animals
       rect:
         serializedVersion: 2
         x: 763
@@ -757,7 +757,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_16
+      name: lv9_sea
       rect:
         serializedVersion: 2
         x: 1507
@@ -798,7 +798,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_17
+      name: camap_sea
       rect:
         serializedVersion: 2
         x: 0
@@ -846,10 +846,10 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_18
+      name: lv10_halloween
       rect:
         serializedVersion: 2
-        x: 392
+        x: 394
         y: 879
         width: 374
         height: 375
@@ -889,7 +889,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_19
+      name: duagang_winter
       rect:
         serializedVersion: 2
         x: 765
@@ -936,7 +936,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_20
+      name: lv11_zoo
       rect:
         serializedVersion: 2
         x: 1339
@@ -977,7 +977,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_21
+      name: ca_map
       rect:
         serializedVersion: 2
         x: 1338
@@ -1036,7 +1036,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_22
+      name: lv11_solid
       rect:
         serializedVersion: 2
         x: 900
@@ -1140,7 +1140,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_25
+      name: lv11_halloween
       rect:
         serializedVersion: 2
         x: 460
@@ -1193,32 +1193,32 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
+      bao_animals: 509315004
+      bo: -1452704967
+      ca_map: -678446428
+      camap_sea: -2033620125
+      cavoi_animals: -893101944
+      cavoi_sea: 654808419
       duagang_default: 551321665
+      duagang_winter: -1756228196
       duahau_default: -1589654493
-      sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_0: 509315004
-      sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_1: 2002280053
-      sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_10: -1452704967
+      duahau_winter: 837957268
+      gau_animals: -870321129
+      lv10_halloween: 947088683
+      lv10_solid: -1208530109
+      lv10_zoo: 646195696
+      lv11_halloween: 196037502
+      lv11_solid: 1901758631
+      lv11_zoo: -2088678828
+      lv9_halloween: -1042424685
+      lv9_sea: 111017131
+      lv9_solid: 2002280053
+      lv9_zoo: -1288097073
       sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_11: -240220002
       sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_13: 582499499
-      sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_14: 654808419
-      sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_15: -870321129
-      sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_16: 111017131
-      sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_17: -2033620125
-      sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_18: 947088683
-      sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_19: -1756228196
-      sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_2: 646195696
-      sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_20: -2088678828
-      sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_21: -678446428
-      sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_22: 1901758631
       sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_24: -652139241
-      sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_25: 196037502
-      sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_3: -1042424685
-      sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_4: 1091870264
-      sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_6: -1288097073
-      sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_7: -1208530109
-      sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_8: 837957268
-      sactx-0-2048x2048-ASTC 6x6-Atlas_Fruits-55d82a0a_9: -893101944
       thom_default: -801736418
+      thom_winter: 1091870264
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
