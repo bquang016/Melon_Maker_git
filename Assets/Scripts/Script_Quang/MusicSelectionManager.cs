@@ -10,17 +10,13 @@ public class MusicSelectionManager : MonoBehaviour
     private MusicItem currentlyPreviewingItem;
     private MusicItem currentSelectedMusic;
 
-    [Header("--- HỆ THỐNG ĐIỂM NHẠC ---")]
-    public int currentPoints = 0;
-    public TextMeshProUGUI textPointsDisplay;
-
     [Header("--- UI THANH DƯỚI CÙNG ---")]
     public GameObject groupPlayState;
     public GameObject groupUnlockState;
     public TextMeshProUGUI textUnlockPrice;
-
-    // THÊM DÒNG NÀY ĐỂ NHẬN DIỆN CÁI OVERLAY CỦA NÚT MUA
     public GameObject buyButtonOverlay;
+
+    // KHÔNG CẦN BIẾN currentPoints NỮA VÌ ĐÃ CÓ KÉT SẮT DATAMANAGER
 
     void Start()
     {
@@ -29,7 +25,6 @@ public class MusicSelectionManager : MonoBehaviour
             currentSelectedMusic = allMusicItems[0];
             currentSelectedMusic.isUnlocked = true;
         }
-        UpdatePointsUI();
     }
 
     void OnEnable()
@@ -42,6 +37,16 @@ public class MusicSelectionManager : MonoBehaviour
         }
 
         RefreshAllItems();
+    }
+
+    // Bắt sự kiện khi Két Sắt nhận được nốt nhạc từ Ads thì tự động làm mới Shop
+    void Update()
+    {
+        // Hàm Update chạy liên tục giúp nút Mua (Buy Overlay) tự động tắt mờ ngay khi xem Ads xong
+        if (groupUnlockState.activeSelf)
+        {
+            CheckBuyButtonOverlay();
+        }
     }
 
     public void OnItemClicked(MusicItem clickedItem)
@@ -58,16 +63,25 @@ public class MusicSelectionManager : MonoBehaviour
 
     private void RefreshAllItems()
     {
-        // 1. Cập nhật 14 bài hát
+        if (currentlyPreviewingItem == null) return;
+
+        // Cập nhật UI cho từng bài hát
         foreach (MusicItem item in allMusicItems)
         {
-            item.SetupItem(this);
+            if (item == null) continue;
             bool isPreview = (item == currentlyPreviewingItem);
             bool isSelected = (item == currentSelectedMusic);
             item.UpdateUIState(isPreview, isSelected);
         }
 
-        // 2. Cập nhật Thanh UI bên dưới
+        // --- LỚP GIÁP KIỂM TRA INSPECTOR ---
+        if (groupPlayState == null || groupUnlockState == null)
+        {
+            Debug.LogError(" LỖI UNITY INSPECTOR: Bạn chưa kéo 'Group Play State' hoặc 'Group Unlock State' vào Music Selection Manager!");
+            return; // Dừng lại ngay để không bị văng lỗi crash game
+        }
+
+        // Cập nhật Thanh UI bên dưới (Nút Mua / Nút Chọn)
         if (currentlyPreviewingItem.isUnlocked)
         {
             groupPlayState.SetActive(true);
@@ -83,18 +97,34 @@ public class MusicSelectionManager : MonoBehaviour
                 textUnlockPrice.text = currentlyPreviewingItem.price.ToString();
             }
 
-            // --- LOGIC MỚI: BẬT/TẮT LỚP PHỦ NÚT MUA TÙY THEO TIỀN ---
-            if (buyButtonOverlay != null)
-            {
-                if (currentPoints >= currentlyPreviewingItem.price)
-                {
-                    buyButtonOverlay.SetActive(false); // Đủ tiền -> Tắt mờ, nút sáng lên
-                }
-                else
-                {
-                    buyButtonOverlay.SetActive(true);  // Thiếu tiền -> Bật mờ
-                }
-            }
+            CheckBuyButtonOverlay();
+        }
+    }
+
+    private void CheckBuyButtonOverlay()
+    {
+        // 1. Kiểm tra an toàn tầng 1 (Tránh lỗi chưa kéo thả Inspector)
+        if (buyButtonOverlay == null || currentlyPreviewingItem == null) return;
+
+        // 2. Kiểm tra an toàn tầng 2 (Tránh lỗi chưa có Két Sắt)
+        if (DataManager.Instance == null || DataManager.Instance.currentSaveData == null) return;
+
+        // 3. TỰ ĐỘNG SỬA LỖI FILE SAVE CŨ (Nếu file cũ không có metaData thì tạo mới)
+        if (DataManager.Instance.currentSaveData.metaData == null)
+        {
+            DataManager.Instance.currentSaveData.metaData = new GameState();
+        }
+
+        // 4. Soi tiền và cập nhật nút
+        int tienThat = DataManager.Instance.currentSaveData.metaData.currentMusicNote;
+
+        if (tienThat >= currentlyPreviewingItem.price)
+        {
+            buyButtonOverlay.SetActive(false); // Đủ tiền -> Tắt mờ nút
+        }
+        else
+        {
+            buyButtonOverlay.SetActive(true);  // Thiếu tiền -> Bật mờ nút
         }
     }
 
@@ -106,18 +136,18 @@ public class MusicSelectionManager : MonoBehaviour
 
     public void OnClick_UnlockButton()
     {
-        // Nếu cố tình bấm khi không đủ tiền thì bỏ qua
-        if (currentPoints < currentlyPreviewingItem.price) return;
+        // LẤY TIỀN TỪ KÉT SẮT RA ĐỂ KIỂM TRA
+        int tienThat = DataManager.Instance.currentSaveData.metaData.currentMusicNote;
 
-        // Trừ tiền
-        currentPoints -= currentlyPreviewingItem.price;
-        UpdatePointsUI();
+        if (tienThat < currentlyPreviewingItem.price) return;
 
-        // Mở khóa bài hát & tự động chọn
+        // TRỪ TIỀN THẬT VÀ LƯU VÀO Ổ CỨNG
+        DataManager.Instance.currentSaveData.metaData.currentMusicNote -= currentlyPreviewingItem.price;
+        DataManager.Instance.SaveDataToDisk();
+
         currentlyPreviewingItem.isUnlocked = true;
         currentSelectedMusic = currentlyPreviewingItem;
 
-        // Refresh lại UI
         RefreshAllItems();
     }
 
@@ -134,21 +164,5 @@ public class MusicSelectionManager : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void OnClick_WatchAdButton()
-    {
-        currentPoints += 500;
-        UpdatePointsUI();
-
-        // --- GỌI LẠI REFRESH Ở ĐÂY ---
-        // Để ngay khi nhận tiền, nếu đủ mua thì lớp mờ của nút tự động bay màu ngay lập tức
-        RefreshAllItems();
-    }
-
-    private void UpdatePointsUI()
-    {
-        if (textPointsDisplay != null)
-        {
-            textPointsDisplay.text = currentPoints.ToString();
-        }
-    }
+    // NÚT XEM QUẢNG CÁO BÂY GIỜ ĐƯỢC CHUYỂN SANG CHO ADSMANAGER XỬ LÝ NÊN XÓA HÀM CŨ ĐI
 }
