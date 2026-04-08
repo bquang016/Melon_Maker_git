@@ -156,9 +156,9 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 800
-        y: 1116
-        width: 85
-        height: 90
+        y: 1117
+        width: 84
+        height: 89
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -281,13 +281,13 @@ TextureImporter:
       name: sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_8
       rect:
         serializedVersion: 2
-        x: 888
-        y: 1118
-        width: 71
-        height: 67
+        x: 887
+        y: 1119
+        width: 72
+        height: 66
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 23, y: 24, z: 23, w: 23}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -665,7 +665,7 @@ TextureImporter:
         height: 140
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 92, y: 93, z: 92, w: 20}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1022,7 +1022,7 @@ TextureImporter:
         height: 48
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 11, y: 12, z: 11, w: 13}
+      border: {x: 16, y: 17, z: 16, w: 17}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1043,7 +1043,7 @@ TextureImporter:
         height: 24
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 8, y: 8, z: 8, w: 8}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1085,7 +1085,7 @@ TextureImporter:
         height: 68
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      border: {x: 22, y: 21, z: 21, w: 21}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -1769,22 +1769,43 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: amthanh
+      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_79
       rect:
         serializedVersion: 2
-        x: 1018
-        y: 490
-        width: 42
-        height: 40
+        x: 1227
+        y: 93
+        width: 36
+        height: 39
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
+      border: {x: 16, y: 15, z: 14, w: 15}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 93f191e267eb96c4f80f6504f24f075d
+      internalID: 161903287
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_80
+      rect:
+        serializedVersion: 2
+        x: 1017
+        y: 490
+        width: 43
+        height: 42
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 044b916cbfd5ba846bb221ff1dc1298c
-      internalID: -1928088092
+      spriteID: 8cd77750ce1845a479adb95a33786015
+      internalID: 1967803316
       vertices: []
       indices: 
       edges: []
@@ -1878,7 +1899,9 @@ TextureImporter:
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_76: -262387338
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_77: 525232267
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_78: -748124318
+      sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_79: 161903287
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_8: -886347430
+      sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_80: 1967803316
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_9: -1381019140
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
