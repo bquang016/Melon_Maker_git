@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d8d43647599aaa3468a665836a0321d2, type: 3}
+  m_Name: Skin_Halloween
+  m_EditorClassIdentifier: 
+  packID: halloween
+  packName: Halloween
+  price: 500
+  isUnlocked: 0
+  fruitSprites:
+  - {fileID: 190733154, guid: b963f8cd64931c044bf975e5de1a756a, type: 3}
+  - {fileID: 1931907786, guid: b963f8cd64931c044bf975e5de1a756a, type: 3}
+  - {fileID: -1303217581, guid: b963f8cd64931c044bf975e5de1a756a, type: 3}
+  - {fileID: 876745479, guid: b963f8cd64931c044bf975e5de1a756a, type: 3}
+  - {fileID: 2063896921, guid: b963f8cd64931c044bf975e5de1a756a, type: 3}
+  - {fileID: 715334860, guid: b963f8cd64931c044bf975e5de1a756a, type: 3}
+  - {fileID: 1434696807, guid: b963f8cd64931c044bf975e5de1a756a, type: 3}
+  - {fileID: 1503577518, guid: b963f8cd64931c044bf975e5de1a756a, type: 3}
+  - {fileID: -1042424685, guid: d6a9011834812604697f15f96a7507d7, type: 3}
+  - {fileID: 947088683, guid: d6a9011834812604697f15f96a7507d7, type: 3}
+  - {fileID: 196037502, guid: d6a9011834812604697f15f96a7507d7, type: 3}
