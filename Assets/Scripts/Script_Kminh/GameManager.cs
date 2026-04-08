@@ -47,6 +47,12 @@ public class GameManager : MonoBehaviour
         // 2. Cập nhật Điểm cao nhất lên giao diện UI
         GameUIManager.Instance?.UpdateBestScore(DataManager.Instance.currentSaveData.bestScore);
 
+        // GỌI HIỆN BANNER NGAY KHI VÀO GAME
+        if (AdsManager.Instance != null)
+        {
+            AdsManager.Instance.ShowBanner();
+        }
+
         // 3. GỌI HÀM LOAD TRÁI CÂY CHƠI DỞ (Tuyệt chiêu đóng băng vật lý)
         LoadSavedBoard();
     }
@@ -144,11 +150,12 @@ public class GameManager : MonoBehaviour
 
     public void TuChoiHoiSinh_ThuaLuon()
     {
+        if (AdsManager.Instance != null)
+        {
+            AdsManager.Instance.ShowInterstitial();
+        }
         GameUIManager.Instance?.ShowGameOver();
         DataManager.Instance.UpdateBestScore(diemHienTai); // Gọi két sắt lưu điểm
-
-        // Hiện QUẢNG CÁO TOÀN MÀN HÌNH ngay lúc này (Gọi Dev 3)
-        AdsManager.Instance.ShowInterstitial();
     }
 
     public void KiemTraMoKhoa(int idQuaMoi)
