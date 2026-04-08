@@ -6,123 +6,132 @@ public class ShopManager : MonoBehaviour
 {
     public static ShopManager Instance;
 
-    [Header("Kho hàng của Shop (Kéo thả các SO vào đây)")]
+    [Header("Kho hàng Skin (Kéo các file Skin vào đây)")]
     public List<SkinPackData> allSkinPacks;
 
-    // ----- CÁC SỰ KIỆN (EVENTS) ĐỂ DEV 5 CẬP NHẬT UI -----
-    public Action<int> OnMoneyChanged;      // Bắn ra khi tiền thay đổi (để update text Tiền)
-    public Action<string> OnBuySuccess;     // Bắn ra khi mua thành công (để hiện Popup Chúc mừng)
-    public Action<string> OnBuyFailed;      // Bắn ra khi mua thất bại (để hiện Popup Lỗi)
+    // ----- SỰ KIỆN (EVENTS) ĐỂ DEV 5 CẬP NHẬT GIAO DIỆN -----
+    public Action<int> OnDiamondChanged;       // Khi số Kim Cương thay đổi
+    public Action<int> OnHammerCountChanged;   // Khi số lượng Búa thay đổi
+    public Action<int> OnShakeCountChanged;    // Khi số lượng Lắc thay đổi
+    public Action<SkinPackData> OnSkinEquipped;// Để Dev 5 di chuyển cái dấu Tick V xanh
+    public Action<string> OnNotify;            // Để hiện chữ thông báo (Popup Text)
 
     private void Awake()
     {
         if (Instance == null) Instance = this;
-
-        // Khởi tạo trạng thái Unlock cho các món hàng khi vừa mở game
-        LoadUnlockedStatus();
     }
 
-    // ----------------------------------------------------
-    // GIẢ LẬP TIỀN TỆ (Sau này Dev 2 sẽ thay bằng Data thật)
-    // ----------------------------------------------------
-    public int GetCurrentMoney()
+    // ==================================================
+    // PHẦN 1: MÀN HÌNH SHOP (MUA BOOSTER & NHẬN KIM CƯƠNG)
+    // ==================================================
+
+    public int GetDiamonds() => PlayerPrefs.GetInt("PlayerDiamonds", 0);
+    public int GetHammerCount() => PlayerPrefs.GetInt("Item_Hammer", 0);
+    public int GetShakeCount() => PlayerPrefs.GetInt("Item_Shake", 0);
+
+    // Dùng cho nút [Xem Ads nhận Kim Cương] trên UI Shop
+    public void WatchAdForDiamonds()
     {
-        // Tạm thời lưu tiền bằng PlayerPrefs. Cho sẵn 1000 vàng để test.
-        return PlayerPrefs.GetInt("PlayerMoney", 1000);
+        // Ghi chú cho Dev 3: Chèn code gọi SDK AdMob vào đây!
+        Debug.Log("[Ads] Đang bật video quảng cáo để nhận 50 Kim Cương...");
+
+        // Giả lập user xem video thành công:
+        AddDiamonds(50);
+        OnNotify?.Invoke("Nhận thành công 50 Kim Cương!");
     }
 
-    public void AddMoney(int amount)
+    public void AddDiamonds(int amount)
     {
-        int newMoney = GetCurrentMoney() + amount;
-        PlayerPrefs.SetInt("PlayerMoney", newMoney);
+        int newTotal = GetDiamonds() + amount;
+        PlayerPrefs.SetInt("PlayerDiamonds", newTotal);
         PlayerPrefs.Save();
-
-        OnMoneyChanged?.Invoke(newMoney); // Hét lên cho UI biết tiền đã đổi!
+        OnDiamondChanged?.Invoke(newTotal); // Báo UI nhảy số
     }
 
-    private void DeductMoney(int amount)
+    // Dùng cho nút [Mua Búa] trên UI Shop
+    public void BuyHammer(int cost = 100)
     {
-        int newMoney = GetCurrentMoney() - amount;
-        PlayerPrefs.SetInt("PlayerMoney", newMoney);
-        PlayerPrefs.Save();
+        if (GetDiamonds() >= cost)
+        {
+            PlayerPrefs.SetInt("PlayerDiamonds", GetDiamonds() - cost);
+            PlayerPrefs.SetInt("Item_Hammer", GetHammerCount() + 1);
+            PlayerPrefs.Save();
 
-        OnMoneyChanged?.Invoke(newMoney);
+            OnDiamondChanged?.Invoke(GetDiamonds());
+            OnHammerCountChanged?.Invoke(GetHammerCount());
+            OnNotify?.Invoke("Đã mua 1 Búa!");
+        }
+        else OnNotify?.Invoke("Không đủ Kim Cương! Hãy xem Ads nhé.");
     }
 
-    // ----------------------------------------------------
-    // LOGIC MUA BÁN VÀ TRANG BỊ
-    // ----------------------------------------------------
-
-    // Hàm này sẽ được gọi khi User bấm vào nút MUA ở 1 món hàng
-    public void BuySkin(SkinPackData packToBuy)
+    // Dùng cho nút [Mua Lắc Hộp] trên UI Shop
+    public void BuyShake(int cost = 50)
     {
-        // 1. Check xem đã có chưa?
-        if (CheckIsUnlocked(packToBuy.packID))
+        if (GetDiamonds() >= cost)
         {
-            EquipSkin(packToBuy); // Có rồi thì mặc luôn, không trừ tiền
-            return;
-        }
+            PlayerPrefs.SetInt("PlayerDiamonds", GetDiamonds() - cost);
+            PlayerPrefs.SetInt("Item_Shake", GetShakeCount() + 1);
+            PlayerPrefs.Save();
 
-        // 2. Check xem đủ tiền không?
-        if (GetCurrentMoney() >= packToBuy.price)
+            OnDiamondChanged?.Invoke(GetDiamonds());
+            OnShakeCountChanged?.Invoke(GetShakeCount());
+            OnNotify?.Invoke("Đã mua 1 lượt Lắc Hộp!");
+        }
+        else OnNotify?.Invoke("Không đủ Kim Cương! Hãy xem Ads nhé.");
+    }
+
+
+    // ==================================================
+    // PHẦN 2: MÀN HÌNH SKIN (ĐỔI GIAO DIỆN)
+    // ==================================================
+
+    // Dev 5 sẽ gắn hàm này vào TẤT CẢ các nút bấm của từng ô Skin
+    public void OnSkinButtonClicked(SkinPackData pack)
+    {
+        // 1. Nếu bộ này đã mở khóa (hoặc là bộ mặc định) -> Mặc luôn
+        if (CheckIsUnlocked(pack.packID) || !pack.requiresAd)
         {
-            // Đủ tiền -> Trừ tiền
-            DeductMoney(packToBuy.price);
-
-            // Mở khóa skin
-            UnlockSkin(packToBuy.packID);
-
-            // Trang bị luôn bộ vừa mua
-            EquipSkin(packToBuy);
-
-            // Bắn Event thành công
-            OnBuySuccess?.Invoke($"Bạn đã mua thành công {packToBuy.packName}!");
+            EquipSkin(pack);
         }
+        // 2. Nếu chưa mở khóa -> Bắt xem quảng cáo
         else
         {
-            // Không đủ tiền
-            OnBuyFailed?.Invoke("Không đủ vàng! Hãy chơi thêm hoặc xem quảng cáo nhé.");
+            WatchAdToUnlockSkin(pack);
         }
     }
 
-    // Hàm trang bị Skin (Gửi dữ liệu sang SkinManager của bạn ở bài trước)
-    public void EquipSkin(SkinPackData packToEquip)
+    private void WatchAdToUnlockSkin(SkinPackData pack)
+    {
+        // Ghi chú cho Dev 3: Chèn code gọi SDK AdMob vào đây!
+        Debug.Log($"[Ads] Đang bật video quảng cáo để mở khóa bộ {pack.packName}...");
+
+        // Giả lập user xem video thành công:
+        UnlockSkin(pack.packID);
+        EquipSkin(pack);
+        OnNotify?.Invoke($"Mở khóa thành công bộ {pack.packName}!");
+    }
+
+    private void EquipSkin(SkinPackData packToEquip)
     {
         if (SkinManager.Instance != null)
         {
             SkinManager.Instance.currentSkinPack = packToEquip;
-            Debug.Log($"Đã trang bị bộ: {packToEquip.packName}");
+            Debug.Log($"[Skin] Đang sử dụng bộ: {packToEquip.packName}");
+
+            // Hét lên cho Dev 5 biết để dời cái dấu CheckMark (V) vào ô vừa bấm
+            OnSkinEquipped?.Invoke(packToEquip);
         }
     }
 
-    // ----------------------------------------------------
-    // LOGIC LƯU TRỮ TRẠNG THÁI MỞ KHÓA (Dùng PlayerPrefs tạm)
-    // ----------------------------------------------------
     private void UnlockSkin(string packID)
     {
-        // Lưu 1 biến có tên là "Unlocked_animal" với giá trị = 1 (1 là true, 0 là false)
         PlayerPrefs.SetInt("Unlocked_" + packID, 1);
         PlayerPrefs.Save();
     }
 
     public bool CheckIsUnlocked(string packID)
     {
-        // Luôn luôn mở khóa bộ Mặc Định
         if (packID == "default") return true;
-
-        // Trả về true nếu giá trị lưu là 1
         return PlayerPrefs.GetInt("Unlocked_" + packID, 0) == 1;
-    }
-
-    private void LoadUnlockedStatus()
-    {
-        // Quét qua toàn bộ gói skin, nếu trong PlayerPrefs có báo đã mua thì đánh dấu mở khóa
-        foreach (var pack in allSkinPacks)
-        {
-            if (CheckIsUnlocked(pack.packID))
-            {
-                pack.isUnlocked = true;
-            }
-        }
     }
 }
