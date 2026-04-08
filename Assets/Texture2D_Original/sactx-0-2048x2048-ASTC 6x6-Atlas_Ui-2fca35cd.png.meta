@@ -1819,7 +1819,7 @@ TextureImporter:
         width: 36
         height: 39
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 15, y: 15, z: 14, w: 15}
       outline: []
       physicsShape: []
@@ -1827,6 +1827,27 @@ TextureImporter:
       bones: []
       spriteID: c872a441d485ab141bba35ff6d803be0
       internalID: -1432598806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_81
+      rect:
+        serializedVersion: 2
+        x: 857
+        y: 1698
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e5f5391c9e0c17a49829c385c60eeddb
+      internalID: 1559575054
       vertices: []
       indices: 
       edges: []
@@ -1923,6 +1944,7 @@ TextureImporter:
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_79: -1462102991
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_8: 2311758073414268124
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_80: -1432598806
+      sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_81: 1559575054
       sactx-0-2048x2048-ASTC 6x6-Atlas_Ui-2fca35cd_9: 3470176913979688419
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
