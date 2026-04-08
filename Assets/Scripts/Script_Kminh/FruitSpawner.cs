@@ -121,7 +121,7 @@ public class FruitSpawner : MonoBehaviour
         if (kyLucHienTai > 0) maxDroppable = kyLucHienTai - 1;
 
         int gioiHanBocTham = Mathf.Min(maxDroppable + 1, fruitPrefabs.Length);
-        return Random.Range(0, gioiHanBocTham);
+        return Random.Range(0, 4);
     }
 
     private void UpdateNextFruitUI()

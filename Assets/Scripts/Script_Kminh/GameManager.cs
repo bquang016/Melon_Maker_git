@@ -2,10 +2,18 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic; // Đừng quên cái này để dùng List
+using System.Collections;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+
+    [Header("--- Record & Stats UI ---")]
+    [SerializeField] public RecordItemUI[] recordItems; // Thêm [SerializeField] vào đây
+    
+    public TextMeshProUGUI dailyBestScoreText;
+    public TextMeshProUGUI totalMergedText;
 
     [Header("Kho chứa TOÀN BỘ 11 Prefab Trái Cây")]
     public GameObject[] tatCaTraiCay;
@@ -44,10 +52,17 @@ public class GameManager : MonoBehaviour
         // 1. Lấy dữ liệu từ cái Két Sắt DataManager
         maxUnlockedFruitID = DataManager.Instance.currentSaveData.maxUnlockedFruitID;
 
-        // 2. Cập nhật Điểm cao nhất lên giao diện UI
+        // 2. Cập nhật Điểm cao nhất lên giao diện HUD
         GameUIManager.Instance?.UpdateBestScore(DataManager.Instance.currentSaveData.bestScore);
 
-        // 3. GỌI HÀM LOAD TRÁI CÂY CHƠI DỞ (Tuyệt chiêu đóng băng vật lý)
+        // 3. Cập nhật Điểm Ngày và Bảng đếm quả Merge (Tính năng mới)
+        GameUIManager.Instance?.UpdateDailyAndTotalUI(
+            DataManager.Instance.currentSaveData.dailyBestScore,
+            DataManager.Instance.currentSaveData.totalMergedFruits
+        );
+        GameUIManager.Instance?.UpdateMergedFruitsDisplay();
+
+        // 4. GỌI HÀM LOAD TRÁI CÂY CHƠI DỞ
         LoadSavedBoard();
     }
 
@@ -68,7 +83,6 @@ public class GameManager : MonoBehaviour
 
         foreach (var data in savedFruits)
         {
-            // Tìm đúng prefab theo ID (Giả sử tên prefab chứa ID ở cuối, VD: "Fruit_0")
             GameObject prefab = null;
             foreach (var p in tatCaTraiCay)
             {
@@ -79,13 +93,11 @@ public class GameManager : MonoBehaviour
             {
                 GameObject newFruit = Instantiate(prefab, new Vector3(data.posX, data.posY, 0), Quaternion.Euler(0, 0, data.rotZ));
 
-                // Tắt vật lý để chống nổ Big Bang
                 Rigidbody2D rb = newFruit.GetComponent<Rigidbody2D>();
                 if (rb != null) rb.simulated = false;
             }
         }
 
-        // Bật lại vật lý sau 0.5s
         Invoke(nameof(EnablePhysics), 0.5f);
     }
 
@@ -100,13 +112,20 @@ public class GameManager : MonoBehaviour
     }
 
     // ==========================================
-    // HỆ THỐNG ĐIỂM & GAME OVER (ĐÃ FIX LỖI)
+    // HỆ THỐNG ĐIỂM & GAME OVER
     // ==========================================
     public void CongDiem(int diemCongThem)
     {
         if (isGameOver) return;
         diemHienTai += diemCongThem;
         GameUIManager.Instance?.UpdateCurrentScore(diemHienTai);
+        
+        // Cập nhật kỷ lục điểm ngay lập tức trong RAM để hiển thị UI
+        DataManager.Instance.UpdateBestScore(diemHienTai);
+        GameUIManager.Instance?.UpdateDailyAndTotalUI(
+            DataManager.Instance.currentSaveData.dailyBestScore,
+            DataManager.Instance.currentSaveData.totalMergedFruits
+        );
     }
 
     public void KichHoatGameOver()
@@ -117,26 +136,19 @@ public class GameManager : MonoBehaviour
         GameUIManager.Instance?.ShowRevive();
     }
 
-    // HÀM NÀY SẼ CHẠY KHI BẠN XEM XONG ADS REWARD
     public void HoiSinh_Revive()
     {
         Debug.Log("<color=cyan>[GameManager] ĐANG HỒI SINH: Quét dọn trái cây...</color>");
 
-        // 1. Tìm toàn bộ trái cây
         GameObject[] tatCaQua = GameObject.FindGameObjectsWithTag("Fruit");
-
-        // 2. Sắp xếp mảng: Quả nào nằm CAO NHẤT (trục Y lớn nhất) đưa lên đầu
         System.Array.Sort(tatCaQua, (a, b) => b.transform.position.y.CompareTo(a.transform.position.y));
 
-        // 3. Tiêu diệt 4 quả cao nhất để lấy không gian trống trong hộp
         int soQuaCanXoa = Mathf.Min(4, tatCaQua.Length);
         for (int i = 0; i < soQuaCanXoa; i++)
         {
-            // Có thể kèm theo hiệu ứng nổ nhỏ ở đây cho đẹp
             Destroy(tatCaQua[i]);
         }
 
-        // 4. Cho phép game chạy lại
         isGameOver = false;
         Time.timeScale = 1f;
         GameUIManager.Instance?.CloseAllPopups();
@@ -145,9 +157,8 @@ public class GameManager : MonoBehaviour
     public void TuChoiHoiSinh_ThuaLuon()
     {
         GameUIManager.Instance?.ShowGameOver();
-        DataManager.Instance.UpdateBestScore(diemHienTai); // Gọi két sắt lưu điểm
+        DataManager.Instance.UpdateBestScore(diemHienTai);
 
-        // Hiện QUẢNG CÁO TOÀN MÀN HÌNH ngay lúc này (Gọi Dev 3)
         AdsManager.Instance.ShowInterstitial();
     }
 
@@ -156,7 +167,7 @@ public class GameManager : MonoBehaviour
         if (idQuaMoi > maxUnlockedFruitID)
         {
             maxUnlockedFruitID = idQuaMoi;
-            DataManager.Instance.UpdateMaxFruit(maxUnlockedFruitID); // Gọi két sắt lưu kỷ lục
+            DataManager.Instance.UpdateMaxFruit(maxUnlockedFruitID);
         }
     }
 
@@ -173,9 +184,15 @@ public class GameManager : MonoBehaviour
 
         GameUIManager.Instance?.UpdateCurrentScore(0);
         GameUIManager.Instance?.UpdateBestScore(DataManager.Instance.currentSaveData.bestScore);
+        
+        // Reset hiển thị bảng kỷ lục ngày về trạng thái mới
+        GameUIManager.Instance?.UpdateDailyAndTotalUI(
+            DataManager.Instance.currentSaveData.dailyBestScore,
+            DataManager.Instance.currentSaveData.totalMergedFruits
+        );
+
         GameUIManager.Instance?.CloseAllPopups();
 
-        // Dọn dẹp sạch sẽ danh sách lưu tạm thời trong RAM
         DataManager.Instance.currentSaveData.sessionData.Clear();
         DataManager.Instance.SaveDataToDisk();
     }

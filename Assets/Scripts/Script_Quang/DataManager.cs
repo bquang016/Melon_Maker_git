@@ -30,7 +30,7 @@ public class DataManager : MonoBehaviour
     }
 
     // ==========================================================
-    // LIÊN KẾT VỚI ADS MANAGER (Của bạn) ĐỂ NHẬN TIỀN
+    // LIÊN KẾT VỚI ADS MANAGER ĐỂ NHẬN THƯỞNG
     // ==========================================================
     private void OnEnable()
     {
@@ -59,24 +59,33 @@ public class DataManager : MonoBehaviour
     }
 
     // ==========================================================
-    // CÁC HÀM CHO GAMEMANAGER / SHOP GỌI ĐỂ LƯU GAME
+    // HỆ THỐNG ĐIỂM SỐ VÀ KỶ LỤC
     // ==========================================================
 
-    public void SaveDataToDisk()
-    {
-        SaveLoadManager.SaveGame(currentSaveData);
-    }
-
-    // Gọi hàm cập nhật điểm
     public void UpdateBestScore(int newScore)
     {
-        if (newScore > currentSaveData.bestScore)
-        {
-            currentSaveData.bestScore = newScore;
-            SaveDataToDisk();
+        string today = System.DateTime.Now.ToString("yyyy-MM-dd");
+
+        // 1. Kiểm tra nếu là ngày mới thì reset điểm ngày
+        if (currentSaveData.lastPlayDate != today) {
+            currentSaveData.lastPlayDate = today;
+            currentSaveData.dailyBestScore = 0;
         }
+
+        // 2. Cập nhật Best Score (mọi thời đại)
+        if (newScore > currentSaveData.bestScore) {
+            currentSaveData.bestScore = newScore;
+        }
+
+        // 3. Cập nhật Daily Best Score (kỷ lục trong ngày)
+        if (newScore > currentSaveData.dailyBestScore) {
+            currentSaveData.dailyBestScore = newScore;
+        }
+
+        SaveDataToDisk();
     }
-    // Thêm đoạn này vào bên dưới hàm UpdateBestScore
+
+    // Cập nhật cấp độ trái cây lớn nhất đạt được
     public void UpdateMaxFruit(int fruitID)
     {
         if (fruitID > currentSaveData.maxUnlockedFruitID)
@@ -87,7 +96,39 @@ public class DataManager : MonoBehaviour
         }
     }
 
-    // gọi hàm này khi người chơi thoát game để lưu lại bàn chơi dở
+    // ==========================================================
+    // HỆ THỐNG THỐNG KÊ MERGE QUẢ
+    // ==========================================================
+
+    // Cộng dồn tổng số quả đã merge từ trước đến nay
+    public void AddMergedFruitCount() {
+        currentSaveData.totalMergedFruits++;
+        SaveDataToDisk();
+    }
+
+    // Đếm chi tiết số lần merge cho từng loại quả riêng biệt
+    public void AddFruitMergeCount(int fruitID) {
+        // Đảm bảo mảng tồn tại để tránh lỗi NullReference
+        if (currentSaveData.fruitMergeCounts == null) {
+            currentSaveData.fruitMergeCounts = new int[11];
+        }
+
+        if (fruitID >= 0 && fruitID < currentSaveData.fruitMergeCounts.Length) {
+            currentSaveData.fruitMergeCounts[fruitID]++;
+            SaveDataToDisk();
+        }
+    }
+
+    // ==========================================================
+    // CÁC HÀM LƯU TRỮ VÀ HÀNH LANG (SESSION)
+    // ==========================================================
+
+    public void SaveDataToDisk()
+    {
+        SaveLoadManager.SaveGame(currentSaveData);
+    }
+
+    // Gọi hàm này khi người chơi thoát game để lưu lại bàn chơi dở
     public void SaveSession(List<FruitSaveData> activeFruits)
     {
         currentSaveData.sessionData.Clear();

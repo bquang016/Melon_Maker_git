@@ -3,11 +3,14 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class GameUIManager : MonoBehaviour
 {
     // Singleton Pattern an toàn
     public static GameUIManager Instance { get; private set; }
+  [Header("Cấu hình hiển thị Top Merge")]
+    public RecordItemUI[] recordItems;
 
     [Header("--- Next Fruit UI ---")]
     [SerializeField] private Image nextFruitImage;
@@ -28,7 +31,13 @@ public class GameUIManager : MonoBehaviour
     [SerializeField] private GameObject panelSkin;
     [SerializeField] private GameObject panelRevive;
     [SerializeField] private GameObject panelGameOver;
+public TMPro.TextMeshProUGUI dailyBestScoreText;
+public TMPro.TextMeshProUGUI totalMergedText;
 
+public void UpdateDailyAndTotalUI(int dailyBest, int totalMerged) {
+    if(dailyBestScoreText != null) dailyBestScoreText.text = dailyBest.ToString();
+    if(totalMergedText != null) totalMergedText.text = totalMerged.ToString();
+}
     private void Awake()
     {
             Instance = this;
@@ -80,6 +89,36 @@ public class GameUIManager : MonoBehaviour
             Debug.LogError("LỖI: Biến currentScoreText bị trống. Bạn chưa kéo thả Text vào Inspector hoặc đã kéo nhầm!");
         }
     }
+    public void UpdateMergedFruitsDisplay() {
+    // Kiểm tra xem bạn đã kéo đủ 6 prefab vào mảng recordItems chưa
+    if (recordItems == null || recordItems.Length < 6) return;
+
+    // Lấy dữ liệu mảng số lượng merge từ DataManager
+    int[] counts = DataManager.Instance.currentSaveData.fruitMergeCounts;
+
+    for (int i = 0; i < 6; i++)
+    {
+        // Công thức tính ngược ID: 10, 9, 8, 7, 6, 5
+        int fruitID = 10 - i; 
+
+        // 1. Lấy Sprite của quả tương ứng từ SkinManager
+        Sprite icon = SkinManager.Instance.GetSpriteForFruit(fruitID);
+
+        // 2. Lấy số lượng đã merge của quả đó từ dữ liệu đã lưu
+        int count = 0;
+        if (fruitID < counts.Length)
+        {
+            count = counts[fruitID];
+        }
+
+        // 3. Đổ dữ liệu vào Prefab cố định tại vị trí i
+        // recordItems[i] chính là cái prefab bạn đặt ở dòng thứ i trên bảng
+        recordItems[i].SetData(icon, count);
+        
+        // Luôn hiển thị vì đây là bảng cố định
+        recordItems[i].gameObject.SetActive(true);
+    }
+}
 
     public void UpdateBestScore(int bestScore)
     {
@@ -111,6 +150,8 @@ public class GameUIManager : MonoBehaviour
         darkOverlay.SetActive(true); // Bật nền đen che dưa hấu
         popup.SetActive(true);
     }
+    
+    
 
     /// <summary>
     /// HÀM ĐÓNG TẤT CẢ PANEL (Dùng cho các nút X)

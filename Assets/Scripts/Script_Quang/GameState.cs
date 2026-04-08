@@ -21,7 +21,6 @@ public class FruitSaveData
     public float posY;
     public float rotZ;
 
-    // Constructor tiện ích
     public FruitSaveData(string id, Vector2 pos, float rot)
     {
         fruitID = id;
@@ -36,7 +35,14 @@ public class SaveData
 {
     // CÁC KỶ LỤC CỦA NGƯỜI CHƠI
     public int bestScore = 0;
-    public int maxUnlockedFruitID = 0; // ID của quả to nhất đã từng ghép được
+    public int dailyBestScore = 0; // THÊM MỚI: Điểm cao nhất trong ngày
+    public string lastPlayDate = ""; // THÊM MỚI: Ngày cuối cùng chơi để reset điểm ngày
+    
+    public int maxUnlockedFruitID = 0;
+
+    // THỐNG KÊ MERGE
+    public int totalMergedFruits = 0; // THÊM MỚI: Tổng số quả đã merge
+    public int[] fruitMergeCounts = new int[11]; // THÊM MỚI: Mảng đếm cho từng loại quả
 
     // DỮ LIỆU KINH TẾ & TRẠNG THÁI BÀN CHƠI
     public GameState metaData = new GameState();
