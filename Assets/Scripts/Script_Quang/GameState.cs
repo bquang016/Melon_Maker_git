@@ -12,18 +12,6 @@ public class GameState
     public List<string> unlockedSkins = new List<string>();
     public List<string> unlockedMusic = new List<string>();
 }
-[System.Serializable]
-public class SaveData
-{
-    public int bestScore = 0;
-    public int maxUnlockedFruitID = 0;
-
-    // Thêm mảng này để lưu tổng số lần merge của mỗi loại quả
-    public int[] fruitMergeCounts = new int[11]; 
-
-    public GameState metaData = new GameState();
-    public List<FruitSaveData> sessionData = new List<FruitSaveData>();
-}
 
 [System.Serializable]
 public class FruitSaveData
@@ -43,3 +31,14 @@ public class FruitSaveData
     }
 }
 
+[System.Serializable]
+public class SaveData
+{
+    // CÁC KỶ LỤC CỦA NGƯỜI CHƠI
+    public int bestScore = 0;
+    public int maxUnlockedFruitID = 0; // ID của quả to nhất đã từng ghép được
+
+    // DỮ LIỆU KINH TẾ & TRẠNG THÁI BÀN CHƠI
+    public GameState metaData = new GameState();
+    public List<FruitSaveData> sessionData = new List<FruitSaveData>();
+}
