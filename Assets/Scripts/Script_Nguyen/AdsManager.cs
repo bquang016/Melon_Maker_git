@@ -8,7 +8,8 @@ public enum RewardType
     Ruby,   // Xem để nhận Ruby
     Revive,  // Xem để hồi sinh (Last Chance)
     MusicNote,
-    Skin
+    Skin,
+    Hammer
 }
 
 public class AdsManager : MonoBehaviour
@@ -23,6 +24,7 @@ public class AdsManager : MonoBehaviour
     public static event Action OnRewardRevive;
     public static event Action<int> OnRewardMusicNote;
     public static event Action OnRewardSkin;
+    public static event Action OnRewardHammer;
 
     // ==========================================
     // ID TEST CỦA GOOGLE
@@ -191,6 +193,10 @@ public class AdsManager : MonoBehaviour
         else if (currentRewardType == RewardType.Skin)
         {
             OnRewardSkin?.Invoke(); // Phát tín hiệu đã xem xong để mở skin
+        }
+        else if (currentRewardType == RewardType.Hammer)
+        {
+            OnRewardHammer?.Invoke(); // Phát tín hiệu cấp Búa hồi sinh
         }
     }
 
