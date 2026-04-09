@@ -87,7 +87,6 @@ GameObject:
   - component: {fileID: 6243963475340334215}
   - component: {fileID: 6820703092960207856}
   - component: {fileID: 2348912085194187552}
-  - component: {fileID: 5324002284877636754}
   m_Layer: 5
   m_Name: Item_Record_Archive
   m_TagString: Untagged
@@ -154,20 +153,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5324002284877636754
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2248827460975369274}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 462271de9cd5d36418164a7aa265280b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fruitIcon: {fileID: 2469712194908264860}
-  countText: {fileID: 924934950155431046}
 --- !u!1 &3504659473888639614
 GameObject:
   m_ObjectHideFlags: 0
@@ -268,7 +253,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9174059915818754843}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -277,7 +262,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 1.9682}
+  m_AnchoredPosition: {x: -0.000011444, y: 1.9682}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1588538456298764462

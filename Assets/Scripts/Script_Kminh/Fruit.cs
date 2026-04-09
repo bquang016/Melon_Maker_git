@@ -64,7 +64,6 @@ public class Fruit : MonoBehaviour
                     int diemThuong = (int)Mathf.Pow(2, this.fruitID);
                     GameManager.Instance.CongDiem(diemThuong);
                     GameManager.Instance.KiemTraMoKhoa(this.fruitID + 1);
-                    DataManager.Instance.AddMergeRecord(this.fruitID + 1);
 
                     GameObject prefabQuaMoi = GameManager.Instance.tatCaTraiCay[this.fruitID + 1];
                     GameObject quaMoi = Instantiate(prefabQuaMoi, viTriMoi, Quaternion.identity);
