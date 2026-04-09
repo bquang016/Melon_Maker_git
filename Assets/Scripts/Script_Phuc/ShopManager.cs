@@ -26,27 +26,51 @@ public class ShopManager : MonoBehaviour
     // PHẦN 1: MÀN HÌNH SHOP (MUA BOOSTER & NHẬN KIM CƯƠNG)
     // ==================================================
 
-    public int GetDiamonds() => PlayerPrefs.GetInt("PlayerDiamonds", 0);
+    // Lấy số Kim Cương (Ruby) trực tiếp từ DataManager thay vì PlayerPrefs
+    public int GetDiamonds()
+    {
+        if (DataManager.Instance != null && DataManager.Instance.currentSaveData != null)
+        {
+            return DataManager.Instance.currentSaveData.metaData.currentRuby;
+        }
+        return 0; // Trả về 0 nếu DataManager chưa kịp load
+    }
+
     public int GetHammerCount() => PlayerPrefs.GetInt("Item_Hammer", 0);
     public int GetShakeCount() => PlayerPrefs.GetInt("Item_Shake", 0);
 
     // Dùng cho nút [Xem Ads nhận Kim Cương] trên UI Shop
     public void WatchAdForDiamonds()
     {
-        // Ghi chú cho Dev 3: Chèn code gọi SDK AdMob vào đây!
         Debug.Log("[Ads] Đang bật video quảng cáo để nhận 50 Kim Cương...");
-
-        // Giả lập user xem video thành công:
+        // Ở đây đáng lẽ gọi AdsManager, nhưng để test nhanh cứ cộng luôn:
         AddDiamonds(50);
         OnNotify?.Invoke("Nhận thành công 50 Kim Cương!");
     }
 
+    // Hàm quan trọng nhất: Cộng/Trừ tiền nối thẳng vào két sắt của DataManager
+    // Hàm quan trọng nhất: Cộng/Trừ tiền nối thẳng vào két sắt của DataManager
     public void AddDiamonds(int amount)
     {
-        int newTotal = GetDiamonds() + amount;
-        PlayerPrefs.SetInt("PlayerDiamonds", newTotal);
-        PlayerPrefs.Save();
-        OnDiamondChanged?.Invoke(newTotal); // Báo UI nhảy số
+        Debug.Log($"<color=yellow>[ShopManager]</color> NHẬN ĐƯỢC LỆNH TỪ NÚT BẤM IAP: Yêu cầu cộng {amount} Kim Cương!");
+
+        if (DataManager.Instance != null && DataManager.Instance.currentSaveData != null)
+        {
+            // Cộng (hoặc trừ) tiền vào Ruby
+            DataManager.Instance.currentSaveData.metaData.currentRuby += amount;
+
+            Debug.Log($"<color=green>[ShopManager]</color> Đã nhét tiền vào két! Tổng tiền trong DataManager hiện đang là: {DataManager.Instance.currentSaveData.metaData.currentRuby}");
+
+            // Lưu lại ngay lập tức xuống ổ cứng
+            DataManager.Instance.SaveDataToDisk();
+
+            // Hét lên cho UI Shop cập nhật lại số tiền hiển thị
+            OnDiamondChanged?.Invoke(DataManager.Instance.currentSaveData.metaData.currentRuby);
+        }
+        else
+        {
+            Debug.LogError("<color=red>[ShopManager]</color> LỖI CỰC MẠNH: Thằng DataManager chưa được tạo ra! Két sắt không tồn tại để cất tiền!");
+        }
     }
 
     // Dùng cho nút [Mua Búa] trên UI Shop
@@ -54,11 +78,11 @@ public class ShopManager : MonoBehaviour
     {
         if (GetDiamonds() >= cost)
         {
-            PlayerPrefs.SetInt("PlayerDiamonds", GetDiamonds() - cost);
+            AddDiamonds(-cost); // Trừ tiền bằng DataManager
+
             PlayerPrefs.SetInt("Item_Hammer", GetHammerCount() + 1);
             PlayerPrefs.Save();
 
-            OnDiamondChanged?.Invoke(GetDiamonds());
             OnHammerCountChanged?.Invoke(GetHammerCount());
             OnNotify?.Invoke("Đã mua 1 Búa!");
         }
@@ -70,11 +94,11 @@ public class ShopManager : MonoBehaviour
     {
         if (GetDiamonds() >= cost)
         {
-            PlayerPrefs.SetInt("PlayerDiamonds", GetDiamonds() - cost);
+            AddDiamonds(-cost); // Trừ tiền bằng DataManager
+
             PlayerPrefs.SetInt("Item_Shake", GetShakeCount() + 1);
             PlayerPrefs.Save();
 
-            OnDiamondChanged?.Invoke(GetDiamonds());
             OnShakeCountChanged?.Invoke(GetShakeCount());
             OnNotify?.Invoke("Đã mua 1 lượt Lắc Hộp!");
         }
