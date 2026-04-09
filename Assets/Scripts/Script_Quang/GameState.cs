@@ -23,8 +23,14 @@ public class SaveData
 
     public GameState metaData = new GameState();
     public List<FruitSaveData> sessionData = new List<FruitSaveData>();
+    public List<DailyScoreRecord> dailyScoreRecords = new List<DailyScoreRecord>();
 }
-
+[System.Serializable]
+public class DailyScoreRecord
+{
+    public string date; // Định dạng "dd/MM/yyyy"
+    public int score;
+}
 [System.Serializable]
 public class FruitSaveData
 {

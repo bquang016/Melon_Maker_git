@@ -104,6 +104,41 @@ public class DataManager : MonoBehaviour
         currentSaveData.sessionData.AddRange(activeFruits);
         SaveDataToDisk();
     }
+    public void UpdateDailyScore(int newScore)
+{
+    string today = System.DateTime.Now.ToString("dd/MM/yyyy");
+    Debug.Log($"[DataManager] Đang cập nhật điểm ngày cho: {today} | Điểm mới: {newScore}");
+    
+    // Đảm bảo list không bao giờ bị null
+    if (currentSaveData.dailyScoreRecords == null) currentSaveData.dailyScoreRecords = new List<DailyScoreRecord>();
+
+    // Tìm xem đã có bản ghi cho ngày hôm nay chưa
+    DailyScoreRecord record = currentSaveData.dailyScoreRecords.Find(r => r.date == today);
+
+    if (record != null)
+    {
+        Debug.Log($"[DataManager] Tìm thấy bản ghi cũ cho ngày {today}: {record.score} điểm.");
+        // Nếu có rồi, chỉ cập nhật nếu điểm mới cao hơn điểm cũ
+        if (newScore > record.score)
+        {
+            record.score = newScore;
+            Debug.Log("[DataManager] Cập nhật điểm kỷ lục mới cho ngày hôm nay!");
+        }
+    }
+    else
+    {
+        Debug.Log($"[DataManager] Chưa có bản ghi cho ngày {today}. Đang tạo mới...");
+        // Nếu chưa có, tạo bản ghi mới cho ngày hôm nay
+        currentSaveData.dailyScoreRecords.Add(new DailyScoreRecord { date = today, score = newScore });
+    }
+
+    // Tùy chọn: Sắp xếp danh sách theo điểm giảm dần hoặc theo ngày
+    currentSaveData.dailyScoreRecords.Sort((a, b) => b.score.CompareTo(a.score));
+
+    // Lưu lại vào ổ cứng
+    SaveDataToDisk();
+    Debug.Log($"[DataManager] Đã lưu xong. Hiện có {currentSaveData.dailyScoreRecords.Count} bản ghi hàng ngày.");
+}
 
     public bool UseRuby(int amount)
     {

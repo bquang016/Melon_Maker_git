@@ -33,6 +33,72 @@ public class GameUIManager : MonoBehaviour
 [SerializeField] private GameObject recordItemPrefab; // Kéo Prefab cột ngang vào đây
 [SerializeField] private Transform recordContainer;   // Kéo Content của ScrollView vào đây
 
+
+[Header("--- Daily Rank UI ---")]
+public GameObject dailyRankItemPrefab; 
+public Transform dailyRankContainer;
+
+public void UpdateDailyRankUI()
+{
+    Debug.Log("[GameUIManager] Đang cập nhật UI Bảng xếp hạng hàng ngày...");
+
+    if (dailyRankContainer == null || dailyRankItemPrefab == null)
+    {
+        Debug.LogError("[GameUIManager] LỖI: dailyRankContainer hoặc dailyRankItemPrefab chưa được kéo vào Inspector!");
+        return;
+    }
+
+    // Xóa các item cũ trong danh sách hiển thị
+    foreach (Transform child in dailyRankContainer) {
+        Destroy(child.gameObject);
+    }
+
+    var records = DataManager.Instance.currentSaveData.dailyScoreRecords;
+    if (records == null || records.Count == 0)
+    {
+        Debug.LogWarning("[GameUIManager] Danh sách dailyScoreRecords trống rỗng, không có gì để hiển thị.");
+        return;
+    }
+
+    Debug.Log($"[GameUIManager] Tìm thấy {records.Count} bản ghi. Đang bắt đầu vòng lặp tạo UI...");
+    
+    for (int i = 0; i < records.Count; i++)
+    {
+        try 
+        {
+            Debug.Log($"[GameUIManager] Đang tạo Item thứ {i+1} cho ngày {records[i].date}...");
+            GameObject go = Instantiate(dailyRankItemPrefab, dailyRankContainer);
+            
+            if (go == null) {
+                Debug.LogError("[GameUIManager] LỖI: Instantiate trả về null!");
+                continue;
+            }
+
+            DailyRankItem itemScript = go.GetComponent<DailyRankItem>();
+            if (itemScript != null)
+            {
+                itemScript.Setup(i + 1, records[i].date, records[i].score);
+                Debug.Log($"[GameUIManager] Đã Setup xong Item thứ {i+1}");
+            }
+            else
+            {
+                Debug.LogError($"[GameUIManager] LỖI: Vật thể vừa tạo ra không có script DailyRankItem! Tên vật thể: {go.name}");
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError($"[GameUIManager] LỖI CỰC NẶNG khi tạo Item thứ {i}: {e.Message}\n{e.StackTrace}");
+        }
+    }
+
+    // Ép Unity cập nhật lại layout ngay lập tức
+    Canvas.ForceUpdateCanvases();
+    if (dailyRankContainer.TryGetComponent<VerticalLayoutGroup>(out var layout))
+    {
+        layout.enabled = false;
+        layout.enabled = true;
+    }
+}
 public void OpenRecord() 
 { 
     CloseAllPopups(); 
@@ -124,13 +190,30 @@ public void OpenRecord()
 
     #endregion
 
+    private bool lastRankState = false;
+
+    private void Update()
+    {
+        // Tự động phát hiện nếu bảng Rank được bật lên (dù bằng cách nào)
+        if (panelRank != null)
+        {
+            bool currentState = panelRank.activeSelf;
+            if (currentState && !lastRankState)
+            {
+                Debug.Log("<color=cyan>[GameUIManager] Phát hiện bảng Rank vừa được bật! Tự động cập nhật...</color>");
+                UpdateDailyRankUI();
+            }
+            lastRankState = currentState;
+        }
+    }
+
     #region QUẢN LÝ POPUP (Gắn vào OnClick của các Button)
 
-    public void OpenSetting() { CloseAllPopups(); EnablePopup(panelSetting); }
-    public void OpenMusic() { CloseAllPopups(); EnablePopup(panelMusic); }
-    public void OpenRank() { CloseAllPopups(); EnablePopup(panelRank); }
-    public void OpenShop() { CloseAllPopups(); EnablePopup(panelShop); }
-    public void OpenSkin() { CloseAllPopups(); EnablePopup(panelSkin); }
+    public void OpenSetting() { Debug.Log("OpenSetting Called"); CloseAllPopups(); EnablePopup(panelSetting); }
+    public void OpenMusic() { Debug.Log("OpenMusic Called"); CloseAllPopups(); EnablePopup(panelMusic); }
+    public void OpenRank() { Debug.Log("OpenRank Called"); CloseAllPopups(); EnablePopup(panelRank); UpdateDailyRankUI(); }
+    public void OpenShop() { Debug.Log("OpenShop Called"); CloseAllPopups(); EnablePopup(panelShop); }
+    public void OpenSkin() { Debug.Log("OpenSkin Called"); CloseAllPopups(); EnablePopup(panelSkin); }
 
     // Màn hình hồi sinh (Gọi bởi Kminh khi thua)
     public void ShowRevive() { CloseAllPopups(); EnablePopup(panelRevive); }

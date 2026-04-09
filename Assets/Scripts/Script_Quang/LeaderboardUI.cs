@@ -39,6 +39,7 @@ public class LeaderboardUI : MonoBehaviour
 
     private async void Start()
     {
+        Debug.Log("<color=orange>[LeaderboardUI] BẠN ĐANG MỞ BẢNG XẾP HẠNG (MOCK DATA: " + useMockData + ")</color>");
         // Nếu không dùng Mock Data thì phải đợi mạng thông mới chạy
         if (!useMockData)
         {

@@ -123,6 +123,10 @@ public class GameManager : MonoBehaviour
         if (isGameOver) return;
         isGameOver = true;
         Time.timeScale = 0f;
+        
+        // Ghi nhận điểm ngay khi thua để chắc chắn nó xuất hiện trong bảng xếp hạng
+        DataManager.Instance.UpdateDailyScore(diemHienTai);
+        
         GameUIManager.Instance?.ShowRevive();
     }
 
@@ -159,6 +163,8 @@ public class GameManager : MonoBehaviour
         }
         GameUIManager.Instance?.ShowGameOver();
         DataManager.Instance.UpdateBestScore(diemHienTai); // Gọi két sắt lưu điểm
+        // THÊM: Lưu kỷ lục của ngày hôm nay
+    DataManager.Instance.UpdateDailyScore(diemHienTai);
     }
 
     public void KiemTraMoKhoa(int idQuaMoi)
@@ -173,6 +179,7 @@ public class GameManager : MonoBehaviour
     public void ReplayGame()
     {
         DataManager.Instance.UpdateBestScore(diemHienTai);
+        DataManager.Instance.UpdateDailyScore(diemHienTai); // Cập nhật điểm ngày khi chơi lại
 
         GameObject[] tatCaQua = GameObject.FindGameObjectsWithTag("Fruit");
         foreach (GameObject qua in tatCaQua) Destroy(qua);
