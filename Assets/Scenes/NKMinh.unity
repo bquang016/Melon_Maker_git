@@ -3426,7 +3426,7 @@ RectTransform:
   m_Father: {fileID: 1700858962}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4657,9 +4657,9 @@ RectTransform:
   - {fileID: 9364903}
   m_Father: {fileID: 1201112839}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 435.45312, y: -44.71265}
   m_SizeDelta: {x: 284.19, y: 82.1666}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &348632964
@@ -5235,7 +5235,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 40}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &371220412
 MonoBehaviour:
@@ -6046,7 +6046,6 @@ MonoBehaviour:
   diemHienTai: 0
   isGameOver: 0
   maxUnlockedFruitID: 0
-  isUsingBooster: 0
 --- !u!4 &454099997
 Transform:
   m_ObjectHideFlags: 0
@@ -9322,7 +9321,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 232696289}
   m_HandleRect: {fileID: 232696288}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -11266,7 +11265,6 @@ MonoBehaviour:
   currentSaveData:
     bestScore: 0
     maxUnlockedFruitID: 0
-    fruitMergeCounts: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
     metaData:
       currentRuby: 0
       currentMusicNote: 0
@@ -12485,9 +12483,9 @@ RectTransform:
   - {fileID: 314509055}
   m_Father: {fileID: 1201112839}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 143.49312, y: -44.71265}
   m_SizeDelta: {x: 279.73, y: 84.247}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &809760639
@@ -15555,9 +15553,9 @@ RectTransform:
   m_Father: {fileID: 234222954}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: -17, y: 0}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1054283067
 MonoBehaviour:
@@ -25472,7 +25470,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1850037202
 RectTransform:
   m_ObjectHideFlags: 0
@@ -27257,8 +27255,6 @@ MonoBehaviour:
   panelSkin: {fileID: 2014386703}
   panelRevive: {fileID: 407625887}
   panelGameOver: {fileID: 690755483}
-  recordItemPrefab: {fileID: 2248827460975369274, guid: 6d8a841ffe7162b4f897f86878443bf1, type: 3}
-  recordContainer: {fileID: 371220411}
 --- !u!4 &1999293043
 Transform:
   m_ObjectHideFlags: 0

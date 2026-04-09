@@ -29,6 +29,42 @@ public class GameUIManager : MonoBehaviour
     [SerializeField] private GameObject panelRevive;
     [SerializeField] private GameObject panelGameOver;
 
+    [Header("--- Record Settings ---")]
+[SerializeField] private GameObject recordItemPrefab; // Kéo Prefab cột ngang vào đây
+[SerializeField] private Transform recordContainer;   // Kéo Content của ScrollView vào đây
+
+public void OpenRecord() 
+{ 
+    CloseAllPopups(); 
+    EnablePopup(panelRecord); 
+
+    // 1. Dọn dẹp các dòng cũ trong Container để làm mới dữ liệu
+    foreach (Transform child in recordContainer) 
+    {
+        Destroy(child.gameObject);
+    }
+
+    // 2. Lấy mảng dữ liệu merge từ DataManager
+    int[] mergeCounts = DataManager.Instance.currentSaveData.fruitMergeCounts;
+
+    // 3. Vòng lặp lấy 6 loại quả to nhất: 
+    // ID 10 là Dưa hấu, giảm dần về 5 (đủ 6 loại)
+    for (int i = 10; i >= 5; i--)
+    {
+        // Tạo ra một bản sao từ Prefab duy nhất bạn đã kéo vào
+        GameObject item = Instantiate(recordItemPrefab, recordContainer);
+        
+        // Lấy script điều khiển trên bản sao đó để nạp dữ liệu
+        FruitRecordItem script = item.GetComponent<FruitRecordItem>();
+        
+        if (script != null)
+        {
+            // Nạp ID quả và số lượng merge tương ứng từ mảng lưu trữ
+            script.Setup(i, mergeCounts[i]);
+        }
+    }
+}
+
     private void Awake()
     {
             Instance = this;
@@ -92,7 +128,6 @@ public class GameUIManager : MonoBehaviour
 
     public void OpenSetting() { CloseAllPopups(); EnablePopup(panelSetting); }
     public void OpenMusic() { CloseAllPopups(); EnablePopup(panelMusic); }
-    public void OpenRecord() { CloseAllPopups(); EnablePopup(panelRecord); }
     public void OpenRank() { CloseAllPopups(); EnablePopup(panelRank); }
     public void OpenShop() { CloseAllPopups(); EnablePopup(panelShop); }
     public void OpenSkin() { CloseAllPopups(); EnablePopup(panelSkin); }
