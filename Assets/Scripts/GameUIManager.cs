@@ -9,6 +9,10 @@ public class GameUIManager : MonoBehaviour
     // Singleton Pattern an toàn
     public static GameUIManager Instance { get; private set; }
 
+    [Header("--- Screenshot Setup ---")]
+    [SerializeField] private Camera gameCamera;
+    [SerializeField] private UnityEngine.UI.RawImage screenshotDisplay;
+
     [Header("--- Next Fruit UI ---")]
     [SerializeField] private Image nextFruitImage;
 
@@ -150,5 +154,33 @@ public class GameUIManager : MonoBehaviour
         }
     }
 
+    public void CaptureGameScene()
+    {
+        if (gameCamera == null) gameCamera = Camera.main;
+
+        // 1. Tạo một "tấm phim" ảo (RenderTexture) khớp với kích thước màn hình
+        RenderTexture rt = new RenderTexture(Screen.width, Screen.height, 24);
+        gameCamera.targetTexture = rt;
+
+        // 2. Bảo Camera "nhìn" và vẽ vào tấm phim đó
+        gameCamera.Render();
+
+        // 3. Chuyển tấm phim đó sang Texture2D để hiển thị lên UI
+        RenderTexture.active = rt;
+        Texture2D screenShot = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
+        screenShot.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
+        screenShot.Apply();
+
+        // 4. Dọn dẹp: Trả lại Camera về trạng thái bình thường
+        gameCamera.targetTexture = null;
+        RenderTexture.active = null;
+        Destroy(rt);
+
+        // 5. Hiện lên màn hình Game Over
+        if (screenshotDisplay != null)
+        {
+            screenshotDisplay.texture = screenShot;
+        }
+    }
     #endregion
 }

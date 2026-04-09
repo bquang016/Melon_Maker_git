@@ -122,6 +122,11 @@ public class GameManager : MonoBehaviour
     {
         if (isGameOver) return;
         isGameOver = true;
+
+        // 1. Chụp ảnh NGAY LẬP TỨC (Hàm này giờ chạy tức thời)
+        GameUIManager.Instance.CaptureGameScene();
+
+        // 2. Sau đó mới hiện UI
         Time.timeScale = 0f;
         GameUIManager.Instance?.ShowRevive();
     }
