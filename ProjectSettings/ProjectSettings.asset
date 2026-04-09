@@ -804,11 +804,11 @@ PlayerSettings:
   apiCompatibilityLevel: 6
   activeInputHandler: 0
   windowsGamepadBackendHint: 0
-  cloudProjectId: 57fcccfd-5ce5-4045-aeb3-678482812300
+  cloudProjectId: 20b32726-b3eb-4991-baaf-f31761ada508
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: Melon-Maker
-  organizationId: phuccpzz12345
+  projectName: Melon-Maker 2026-03-13_16-28-50
+  organizationId: buidangquangmtp
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}
