@@ -21,6 +21,16 @@ public class DataManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+    public void AddMergeRecord(int fruitID)
+{
+    // Kiểm tra ID hợp lệ (0-10)
+    if (fruitID >= 0 && fruitID < currentSaveData.fruitMergeCounts.Length)
+    {
+        currentSaveData.fruitMergeCounts[fruitID]++;
+        SaveDataToDisk(); // Lưu ngay lập tức vào file json
+        Debug.Log($"[DataManager] Quả ID {fruitID} đã được merge tổng cộng: {currentSaveData.fruitMergeCounts[fruitID]} lần.");
+    }
+}
 
     private void Start()
     {
