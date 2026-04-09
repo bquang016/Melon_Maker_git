@@ -35,11 +35,13 @@ public class GameManager : MonoBehaviour
     {
         // Khi AdsManager phát loa báo xem xong Video Hồi sinh, tự động gọi hàm HoiSinh_Revive
         AdsManager.OnRewardRevive += HoiSinh_Revive;
+        AdsManager.OnRewardHammer += UseHammerRevive;
     }
 
     private void OnDisable()
     {
         AdsManager.OnRewardRevive -= HoiSinh_Revive;
+        AdsManager.OnRewardHammer -= UseHammerRevive;
     }
 
     private void Start()
@@ -196,5 +198,20 @@ public class GameManager : MonoBehaviour
         // Dọn dẹp sạch sẽ danh sách lưu tạm thời trong RAM
         DataManager.Instance.currentSaveData.sessionData.Clear();
         DataManager.Instance.SaveDataToDisk();
+    }
+    public void UseHammerRevive()
+    {
+        Debug.Log("<color=yellow>[GameManager] Đang dùng Búa Ads để hồi sinh...</color>");
+
+        // 1. Kích hoạt hiệu ứng Búa của Quang (Nếu Quang đã làm xong script)
+        // Ví dụ: HammerManager.Instance.ActivateHammer();
+
+        // 2. Gọi logic dọn dẹp quả hiện có để tiếp tục chơi
+        HoiSinh_Revive();
+
+        // 3. Đóng popup và tiếp tục game
+        isGameOver = false;
+        Time.timeScale = 1f;
+        GameUIManager.Instance?.CloseAllPopups();
     }
 }
