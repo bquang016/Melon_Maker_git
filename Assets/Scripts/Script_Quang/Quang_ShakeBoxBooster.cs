@@ -27,7 +27,17 @@ public class Quang_ShakeBoxBooster : MonoBehaviour
     public void ActivateShakeBooster()
     {
         if (isShaking || GameManager.Instance.isGameOver) return;
-        StartCoroutine(ShakeSequence());
+
+        // Gọi DataManager để trừ 200 Ruby
+        if (DataManager.Instance.UseRuby(200))
+        {
+            GameManager.Instance.isUsingBooster = true;
+            StartCoroutine(ShakeSequence());
+        }
+        else
+        {
+            Debug.Log("Bạn cần 200 Ruby để lắc hộp!");
+        }
     }
 
     private IEnumerator ShakeSequence()
