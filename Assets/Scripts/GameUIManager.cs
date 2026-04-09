@@ -28,6 +28,7 @@ public class GameUIManager : MonoBehaviour
     [SerializeField] private GameObject panelSkin;
     [SerializeField] private GameObject panelRevive;
     [SerializeField] private GameObject panelGameOver;
+    [SerializeField] private TextMeshProUGUI gameOverScoreText;
 
     private void Awake()
     {
@@ -100,8 +101,17 @@ public class GameUIManager : MonoBehaviour
     // Màn hình hồi sinh (Gọi bởi Kminh khi thua)
     public void ShowRevive() { CloseAllPopups(); EnablePopup(panelRevive); }
 
-    // Màn hình Game Over (Gọi khi bấm No Thanks ở màn Revive)
-    public void ShowGameOver() { CloseAllPopups(); EnablePopup(panelGameOver); }
+    public void ShowGameOver(int finalScore)
+    {
+        CloseAllPopups();
+        EnablePopup(panelGameOver);
+
+        // Gán điểm vào Text của màn Game Over
+        if (gameOverScoreText != null)
+        {
+            gameOverScoreText.text = finalScore.ToString();
+        }
+    }
 
     /// <summary>
     /// Hàm helper để bật 1 popup kèm theo nền đen DarkOverlay

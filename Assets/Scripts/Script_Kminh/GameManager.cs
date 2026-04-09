@@ -154,8 +154,11 @@ public class GameManager : MonoBehaviour
         {
             AdsManager.Instance.ShowInterstitial();
         }
-        GameUIManager.Instance?.ShowGameOver();
-        DataManager.Instance.UpdateBestScore(diemHienTai); // Gọi két sắt lưu điểm
+
+        // ĐỔI Ở ĐÂY: Dùng diemHienTai để truyền vào UI
+        GameUIManager.Instance.ShowGameOver(diemHienTai);
+
+        DataManager.Instance.UpdateBestScore(diemHienTai);
     }
 
     public void KiemTraMoKhoa(int idQuaMoi)
