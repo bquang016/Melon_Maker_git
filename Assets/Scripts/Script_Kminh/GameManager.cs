@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour
     [Header("Hệ thống Mở Khóa (Progression)")]
     public int maxUnlockedFruitID = 0;
 
+    [Header("Hệ thống Booster của Quang")]
+    public bool isUsingBooster = false;
+
     private void Awake()
     {
         Instance = this;

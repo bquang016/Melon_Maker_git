@@ -94,4 +94,24 @@ public class DataManager : MonoBehaviour
         currentSaveData.sessionData.AddRange(activeFruits);
         SaveDataToDisk();
     }
+
+    public bool UseRuby(int amount)
+    {
+        // 1. Kiểm tra xem có đủ tiền không
+        if (currentSaveData.metaData.currentRuby >= amount)
+        {
+            // 2. Trừ tiền
+            currentSaveData.metaData.currentRuby -= amount;
+            Debug.Log($"[DataManager] Đã dùng {amount} Ruby. Còn lại: {currentSaveData.metaData.currentRuby}");
+
+            // 3. Lưu lại vào ổ cứng ngay lập tức
+            SaveDataToDisk();
+            return true; // Trả về true nếu trừ tiền thành công
+        }
+        else
+        {
+            Debug.LogWarning("[DataManager] Không đủ Ruby!");
+            return false; // Trả về false nếu không đủ tiền
+        }
+    }
 }
