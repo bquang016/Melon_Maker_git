@@ -1,63 +1,72 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using TMPro; // Dùng TextMeshPro cho mượt
+using TMPro;
 
 public class SkinItemUI : MonoBehaviour
 {
-    [Header("Dev 5 kéo các thành phần trong Prefab vào đây:")]
+    [Header("UI Elements")]
     public Image skinIcon;
     public TextMeshProUGUI skinNameText;
-    public TextMeshProUGUI actionText; // Chữ trên nút ("Sử Dụng", "Xem Ads", "Đang Dùng")
+
+    [Header("Action Controls")]
     public Button actionButton;
+    public TextMeshProUGUI actionText;
+    public GameObject adIcon;        // Icon xem quảng cáo
+    public GameObject checkmarkIcon; // Dấu tick xanh
+
+    [Header("Button Colors")]
+    public Color yellowColor = new Color(1f, 0.8f, 0f); // Màu vàng cho Ads
+    public Color blueColor = new Color(0f, 0.5f, 1f);   // Màu xanh cho Use
 
     private SkinPackData mySkinData;
 
-    // Hàm này được gọi khi màn hình sinh ra cái ô này
     public void Setup(SkinPackData data)
     {
         mySkinData = data;
         skinNameText.text = data.packName;
-
-        // Lấy ảnh đầu tiên của bộ làm Icon
         if (data.fruitSprites != null && data.fruitSprites.Length > 0)
-        {
             skinIcon.sprite = data.fruitSprites[0];
-        }
 
         UpdateUIState();
 
-        // Cài đặt sự kiện khi người chơi bấm nút
         actionButton.onClick.RemoveAllListeners();
-        actionButton.onClick.AddListener(() =>
-        {
-            ShopManager.Instance.OnSkinButtonClicked(mySkinData);
-        });
+        actionButton.onClick.AddListener(() => ShopManager.Instance.OnSkinButtonClicked(mySkinData));
     }
 
-    // Hàm này để đổi trạng thái của nút bấm (Tự động chạy theo Data của Dev 4)
     public void UpdateUIState()
     {
+        // 1. Kiểm tra trạng thái sở hữu
         bool isUnlocked = ShopManager.Instance.CheckIsUnlocked(mySkinData.packID) || !mySkinData.requiresAd;
+        // 2. Kiểm tra xem có đang trang bị không
+        bool isEquipped = (SkinManager.Instance.currentSkinPack == mySkinData);
 
-        if (isUnlocked)
+        if (isEquipped)
         {
-            // Nếu đã mở khóa -> Check xem có đang mặc không
-            if (SkinManager.Instance.currentSkinPack == mySkinData)
-            {
-                actionText.text = "Đang Dùng";
-                actionButton.interactable = false; // Tối màu nút lại, không cho bấm nữa
-            }
-            else
-            {
-                actionText.text = "Sử Dụng";
-                actionButton.interactable = true; // Sáng lên cho bấm
-            }
+            // TRẠNG THÁI: ĐANG TRANG BỊ -> Hiện tick, ẩn nút
+            checkmarkIcon.SetActive(true);
+            actionButton.gameObject.SetActive(false);
         }
         else
         {
-            // Nếu chưa mở khóa
-            actionText.text = "Xem Ads";
-            actionButton.interactable = true;
+            // TRẠNG THÁI: CHƯA TRANG BỊ -> Hiện nút, ẩn tick
+            checkmarkIcon.SetActive(false);
+            actionButton.gameObject.SetActive(true);
+
+            if (isUnlocked)
+            {
+                // Đã sở hữu nhưng chưa dùng -> Nút Xanh + Chữ "Use"
+                actionButton.image.color = blueColor;
+                actionText.text = "Use";
+                actionText.gameObject.SetActive(true);
+                adIcon.SetActive(false);
+            }
+            else
+            {
+                // Chưa sở hữu -> Nút Vàng + Icon Ads
+                actionButton.image.color = yellowColor;
+                actionText.gameObject.SetActive(false);
+                adIcon.SetActive(true);
+            }
         }
     }
 }

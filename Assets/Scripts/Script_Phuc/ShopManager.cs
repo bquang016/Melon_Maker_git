@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class ShopManager : MonoBehaviour
 {
     public static ShopManager Instance;
+    private SkinPackData pendingSkinToUnlock;
 
     [Header("Kho hàng Skin (Kéo các file Skin vào đây)")]
     public List<SkinPackData> allSkinPacks;
@@ -102,15 +103,29 @@ public class ShopManager : MonoBehaviour
 
     private void WatchAdToUnlockSkin(SkinPackData pack)
     {
-        // Ghi chú cho Dev 3: Chèn code gọi SDK AdMob vào đây!
-        Debug.Log($"[Ads] Đang bật video quảng cáo để mở khóa bộ {pack.packName}...");
+        pendingSkinToUnlock = pack;
 
-        // Giả lập user xem video thành công:
-        UnlockSkin(pack.packID);
-        EquipSkin(pack);
-        OnNotify?.Invoke($"Mở khóa thành công bộ {pack.packName}!");
+        // 1. Đăng ký nghe sự kiện OnRewardSkin từ AdsManager
+        AdsManager.OnRewardSkin += OnAdsFinished;
+
+        // 2. Gọi hàm hiện quảng cáo với tham số RewardType.Skin
+        AdsManager.Instance.ShowRewardVideo(RewardType.Skin);
+
+        Debug.Log($"[Shop] Đang gọi AdMob để mở khóa: {pack.packName}");
     }
 
+    private void OnAdsFinished() // Bỏ tham số int vì OnRewardSkin không truyền số
+    {
+        AdsManager.OnRewardSkin -= OnAdsFinished; // Hủy đăng ký ngay
+
+        if (pendingSkinToUnlock != null)
+        {
+            UnlockSkin(pendingSkinToUnlock.packID);
+            EquipSkin(pendingSkinToUnlock);
+            OnNotify?.Invoke($"Mở khóa thành công bộ {pendingSkinToUnlock.packName}!");
+            pendingSkinToUnlock = null;
+        }
+    }
     private void EquipSkin(SkinPackData packToEquip)
     {
         if (SkinManager.Instance != null)

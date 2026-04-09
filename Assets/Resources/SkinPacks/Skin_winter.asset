@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   packID: winter
   packName: "m\xF9a \u0111\xF4ng"
-  price: 500
+  requiresAd: 1
   isUnlocked: 0
   fruitSprites:
   - {fileID: 1810591039, guid: b963f8cd64931c044bf975e5de1a756a, type: 3}
