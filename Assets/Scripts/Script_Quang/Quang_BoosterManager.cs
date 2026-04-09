@@ -32,17 +32,24 @@ public class Quang_BoosterManager : MonoBehaviour
     {
         if (GameManager.Instance.isGameOver || isTargeting) return;
 
-        isTargeting = true;
-        GameManager.Instance.isUsingBooster = true;
+        // Gọi DataManager để trừ 100 Ruby
+        if (DataManager.Instance.UseRuby(100))
+        {
+            // Nếu trừ tiền thành công mới chạy hiệu ứng
+            isTargeting = true;
+            GameManager.Instance.isUsingBooster = true;
 
-        // --- THÊM 2 DÒNG NÀY ĐỂ ĐẢM BẢO OVERLAY LUÔN HIỆN ---
-        if (topBar != null) topBar.gameObject.SetActive(true);
-        if (bottomBar != null) bottomBar.gameObject.SetActive(true);
-        // ----------------------------------------------------
+            if (topBar != null) topBar.gameObject.SetActive(true);
+            if (bottomBar != null) bottomBar.gameObject.SetActive(true);
 
-        StopAllCoroutines();
-        StartCoroutine(AnimateBars(barHeight));
-        Debug.Log("[Quang] Đã bật ngắm Búa. Click trái cây để đập!");
+            StopAllCoroutines();
+            StartCoroutine(AnimateBars(barHeight));
+        }
+        else
+        {
+            // Xử lý khi không đủ tiền (ví dụ: hiện thông báo)
+            Debug.Log("Bạn cần 100 Ruby để dùng Búa!");
+        }
     }
 
     private void Update()
