@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   packID: sea
   packName: Sea
-  price: 500
+  requiresAd: 1
   isUnlocked: 0
   fruitSprites:
   - {fileID: 578332360, guid: b963f8cd64931c044bf975e5de1a756a, type: 3}
